@@ -1,0 +1,18 @@
+criar projeto react native
+yarn create expo-app app -t expo-template-blank-typescript
+
+startar o expo
+sudo yarn start --tunnel
+
+intall tipagens and styled components and styled components react native
+yarn add -D @types/styled-components @types/styled-components-react-native
+
+yarn expo install react-native-svg
+lib native for read img .svg
+
+
+git rm --cached nome_modules/ -r ( diretório ) -f ( arquivo ) 
+git branch -M main
+git remote add origin https://github.com/ThyagoNunes/nameRepo.git
+
+
