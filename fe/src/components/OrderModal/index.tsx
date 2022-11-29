@@ -38,6 +38,7 @@ export function OrderModal({visible, order, onClose}: OrderModalProps) {
 
   return (
     <Overlay>
+
       <ModalBody>
         <header>
           <strong>Mesa {order.table}</strong>
