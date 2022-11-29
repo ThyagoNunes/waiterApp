@@ -1,0 +1,55 @@
+yarn add -D typescript
+yarn tsc --init
+
+tsconfig.json
+    "outDir": "./dist",
+
+package.json
+    "scripts": {
+        "build": "tsc"
+    },
+
+
+eslint
+    npm init @eslint/config
+    3,1,3,yes,node,
+    2,3,
+
+express
+    yarn add express
+    yarn add -D @types/express
+
+    yarn add -D ts-node
+    yarn add -D nodemon
+    package.json
+    "dev": "nodemon src/index.ts"
+
+conexão com o banco de dados/manipualação e tipagem de documentos
+lucid.app ( database diagram )
+    yarn add mongoose - odm - object data model
+
+    index.ts
+    import mongoose from 'mongoose'
+
+    mongoose.connect('mongodb://localhost:27017')
+        .then(() => {
+            const app = express();
+            const port = 3001;
+
+            app.listen(port), () => {
+                console.log(`Server is running on http://localhost:${port}`)
+            }
+        });
+        .catch(() => console.log('Erro ao conectar no mongodb'));´
+
+multipart form data ( chave valor )
+    yarn add multer
+
+    routes.ts ( import multer )
+    const upload = multer({     // see that
+    storage: multer.diskStorage({
+        destination(req, file, callback) {
+            callback(null, path.resolve(__dirname, '../', 'uploads'));
+        }
+    })
+});
