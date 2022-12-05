@@ -10,7 +10,7 @@ const router_1 = require("./router");
 mongoose_1.default.connect('mongodb://localhost:27017') // CONNECT DB
     .then(() => {
     const app = (0, express_1.default)();
-    const port = 3002;
+    const port = 3001;
     app.use('/uploads', express_1.default.static(node_path_1.default.resolve(__dirname, '../', 'uploads'))); // caminho relativo para imagens estáticas
     app.use(express_1.default.json());
     app.use(router_1.router);

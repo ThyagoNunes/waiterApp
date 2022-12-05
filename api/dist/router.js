@@ -16,6 +16,8 @@ const listOrders_1 = require("./app/useCases/orders/listOrders");
 const createOrder_1 = require("./app/useCases/orders/createOrder");
 const changeOrderStatus_1 = require("./app/useCases/orders/changeOrderStatus");
 const cancelOrder_1 = require("./app/useCases/orders/cancelOrder");
+const listCategory_1 = require("./app/useCases/categories/listCategory");
+const updateCategory_1 = require("./app/useCases/categories/updateCategory");
 exports.router = (0, express_1.Router)();
 const upload = (0, multer_1.default)({
     storage: multer_1.default.diskStorage({
@@ -29,8 +31,12 @@ const upload = (0, multer_1.default)({
 });
 // List categories
 exports.router.get('/categories', listCategories_1.listCategories);
+// List categoriy
+exports.router.get('/categories/:categoryId', listCategory_1.listCategory);
 // Create category
 exports.router.post('/categories', createCategory_1.createCategory);
+// Update categoriy
+exports.router.put('/categories/:categoryId', updateCategory_1.updateCategory);
 // List products
 exports.router.get('/products', listProducts_1.listProducts);
 // Create product
