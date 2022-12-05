@@ -9,7 +9,6 @@ export async function listOrder(req: Request, res: Response) {
             .sort({ createdAt: 1 })    //  -1 = desc 1 = asc
             .populate('products.product');
 
-        console.log(orderId);
         if(!order) {
             return res.status(400).json({error: 'This order not exists'});
         }

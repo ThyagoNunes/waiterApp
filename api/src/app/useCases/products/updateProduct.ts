@@ -17,8 +17,6 @@ export async function updateProduct(req: Request, res: Response) {
             return res.status(400).json({error: 'This product not exists'});
         }
 
-        console.log(name);
-
         if(name && name !== productExists.name ){
             return res.status(400).json({error: `Product ${name} is already exists`});
         }
