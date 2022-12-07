@@ -13,7 +13,7 @@ import { listProducts } from './app/useCases/products/listProducts';
 import { listProduct } from './app/useCases/products/listProduct';
 import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
 import { updateProduct } from './app/useCases/products/updateProduct';
-import { deleteProduct} from './app/useCases/products/deleteProduct';
+import { deleteProduct } from './app/useCases/products/deleteProduct';
 import { listOrders } from './app/useCases/orders/listOrders';
 import { listOrder } from './app/useCases/orders/listOrder';
 import { createOrder } from './app/useCases/orders/createOrder';
@@ -23,14 +23,14 @@ import { cancelOrder } from './app/useCases/orders/cancelOrder';
 export const router = Router();
 
 const upload = multer({     // upload arquivos
-    storage: multer.diskStorage({
-        destination(req, file, callback) {
-            callback(null, path.resolve(__dirname, '../', 'uploads'));
-        },
-        filename(req, file, callback) {     // FILENAME FOLLOW STANDARD
-            callback(null, `${Date.now()}-${file.originalname}`);
-        },
-    }),
+  storage: multer.diskStorage({
+    destination(req, file, callback) {
+      callback(null, path.resolve(__dirname, '../', 'uploads'));
+    },
+    filename(req, file, callback) {     // FILENAME FOLLOW STANDARD
+      callback(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
 });
 
 // List categories

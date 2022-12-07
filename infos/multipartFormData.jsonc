@@ -1,0 +1,342 @@
+/* This is for create  multipart formdata */
+[
+    {
+		"name": "Hamburguer",
+		"description": "Delicioso Hamburguer com molho especial da casa",
+		"imagePath": "1669300170683-burger-molho-especial.png",
+		"price": 28.99,
+		"ingredients": [
+			{
+				"name": "Pão de hambuguer",
+				"icon": "🍔",
+				"_id": "637f7fcae9d9d4f00f7ceafc"
+			},
+			{
+				"name": "Molho especial",
+				"icon": "🥫",
+				"_id": "637f7fcae9d9d4f00f7ceafd"
+			},
+			{
+				"name": "Queijo cheddar",
+				"icon": "🧀",
+				"_id": "637f7fcae9d9d4f00f7ceafe"
+			},
+			{
+				"name": "Carne",
+				"icon": "🥩",
+				"_id": "637f7fcae9d9d4f00f7ceaff"
+			},
+			{
+				"name": "Cebola",
+				"icon": "🧅",
+				"_id": "637f7fcae9d9d4f00f7ceb00"
+			},
+			{
+				"name": "Picles",
+				"icon": "🥒",
+				"_id": "637f7fcae9d9d4f00f7ceb01"
+			},
+			{
+				"name": "Tomate",
+				"icon": "🍅",
+				"_id": "637f7fcae9d9d4f00f7ceb02"
+			},
+			{
+				"name": "Alface",
+				"icon": "🥬",
+				"_id": "637f7fcae9d9d4f00f7ceb03"
+			}
+		],
+		"category": "6372e95eee844e00785a4539"
+	}
+]
+
+
+/* 638cb8a8898d5ece8e34a5e6 */
+
+
+
+/* 
+
+// 20221204151247
+// http://localhost:3001/products
+
+[
+  {
+    "_id": "6372fba952a5f495d5735da4",
+    "name": "Pizza quatro queijos",
+    "description": "Deliciosa pizza quatro queijos com borda simples",
+    "imagePath": "1668479913589-quatro-queijos.png",
+    "price": 40,
+    "ingredients": [
+      {
+        "name": "Mussarela",
+        "icon": "🧀",
+        "_id": "6372fba952a5f495d5735da5"
+      },
+      {
+        "name": "Parmesão",
+        "icon": "🧀",
+        "_id": "6372fba952a5f495d5735da6"
+      },
+      {
+        "name": "Gouda",
+        "icon": "🧀",
+        "_id": "6372fba952a5f495d5735da7"
+      },
+      {
+        "name": "Brie",
+        "icon": "🧀",
+        "_id": "6372fba952a5f495d5735da8"
+      }
+    ],
+    "category": "6372e7efee844e00785a4534",
+    "__v": 0
+  },
+  {
+    "_id": "6373005039cd3c91f3afa248",
+    "name": "Coca cola",
+    "description": "Coca cola lata geladinha topzera",
+    "imagePath": "1668481104079-coca-cola.png",
+    "price": 7,
+    "ingredients": [
+      
+    ],
+    "category": "6372e931ee844e00785a4537",
+    "__v": 0
+  },
+  {
+    "_id": "637f7fcae9d9d4f00f7ceafb",
+    "name": "Hamburguer",
+    "description": "Delicioso Hamburguer com molho especial da casa",
+    "imagePath": "1669300170683-burger-molho-especial.png",
+    "price": 28.99,
+    "ingredients": [
+      {
+        "name": "Pão de hambuguer",
+        "icon": "🍔",
+        "_id": "637f7fcae9d9d4f00f7ceafc"
+      },
+      {
+        "name": "Molho especial",
+        "icon": "🥫",
+        "_id": "637f7fcae9d9d4f00f7ceafd"
+      },
+      {
+        "name": "Queijo cheddar",
+        "icon": "🧀",
+        "_id": "637f7fcae9d9d4f00f7ceafe"
+      },
+      {
+        "name": "Carne",
+        "icon": "🥩",
+        "_id": "637f7fcae9d9d4f00f7ceaff"
+      },
+      {
+        "name": "Cebola",
+        "icon": "🧅",
+        "_id": "637f7fcae9d9d4f00f7ceb00"
+      },
+      {
+        "name": "Picles",
+        "icon": "🥒",
+        "_id": "637f7fcae9d9d4f00f7ceb01"
+      },
+      {
+        "name": "Tomate",
+        "icon": "🍅",
+        "_id": "637f7fcae9d9d4f00f7ceb02"
+      },
+      {
+        "name": "Alface",
+        "icon": "🥬",
+        "_id": "637f7fcae9d9d4f00f7ceb03"
+      }
+    ],
+    "category": "6372e95eee844e00785a4539",
+    "__v": 0
+  },
+  {
+    "_id": "637f81aee9d9d4f00f7ceb13",
+    "name": "Cerveja",
+    "description": "Cerveja geladinha 100% puro malte",
+    "imagePath": "1669300654294-cerveja.png",
+    "price": 8.49,
+    "ingredients": [
+      
+    ],
+    "category": "6372e931ee844e00785a4537",
+    "__v": 0
+  },
+  {
+    "_id": "637f8244e9d9d4f00f7ceb23",
+    "name": "Suco de laranja",
+    "description": "Suco feito 100% da fruta e gelado",
+    "imagePath": "1669300804426-suco-de-laranja.png",
+    "price": 8,
+    "ingredients": [
+      
+    ],
+    "category": "6372e931ee844e00785a4537",
+    "__v": 0
+  },
+  {
+    "_id": "637f8329e9d9d4f00f7ceb33",
+    "name": "Hmaburguer chicken",
+    "description": "Delicioso Hamburguer de frango empanado",
+    "imagePath": "1669301033350-chicken.png",
+    "price": 27.99,
+    "ingredients": [
+      {
+        "name": "Pão de hambuguer",
+        "icon": "🍔",
+        "_id": "637f8329e9d9d4f00f7ceb34"
+      },
+      {
+        "name": "Queijo cheddar",
+        "icon": "🧀",
+        "_id": "637f8329e9d9d4f00f7ceb35"
+      },
+      {
+        "name": "Frango empanado",
+        "icon": "🍗",
+        "_id": "637f8329e9d9d4f00f7ceb36"
+      },
+      {
+        "name": "Cebola",
+        "icon": "🧅",
+        "_id": "637f8329e9d9d4f00f7ceb37"
+      },
+      {
+        "name": "Picles",
+        "icon": "🥒",
+        "_id": "637f8329e9d9d4f00f7ceb38"
+      },
+      {
+        "name": "Tomate",
+        "icon": "🍅",
+        "_id": "637f8329e9d9d4f00f7ceb39"
+      },
+      {
+        "name": "Alface",
+        "icon": "🥬",
+        "_id": "637f8329e9d9d4f00f7ceb3a"
+      }
+    ],
+    "category": "6372e95eee844e00785a4539",
+    "__v": 0
+  },
+  {
+    "_id": "637f84fce9d9d4f00f7ceb5c",
+    "name": "Hmaburguer egg",
+    "description": "Delicioso Hamburguer de frango empanado",
+    "imagePath": "1669301500075-egg.png",
+    "price": 29.99,
+    "ingredients": [
+      {
+        "name": "Pão de hambuguer",
+        "icon": "🍔",
+        "_id": "637f84fce9d9d4f00f7ceb5d"
+      },
+      {
+        "name": "Queijo cheddar",
+        "icon": "🧀",
+        "_id": "637f84fce9d9d4f00f7ceb5e"
+      },
+      {
+        "name": "Ovos fritos",
+        "icon": "🍳",
+        "_id": "637f84fce9d9d4f00f7ceb5f"
+      },
+      {
+        "name": "Presunto",
+        "icon": "🍖",
+        "_id": "637f84fce9d9d4f00f7ceb60"
+      },
+      {
+        "name": "Bacon",
+        "icon": "🥓",
+        "_id": "637f84fce9d9d4f00f7ceb61"
+      },
+      {
+        "name": "Carne",
+        "icon": "🥩",
+        "_id": "637f84fce9d9d4f00f7ceb62"
+      }
+    ],
+    "category": "6372e95eee844e00785a4539",
+    "__v": 0
+  },
+  {
+    "_id": "637f860ce9d9d4f00f7cebb2",
+    "name": "PIzza frango com catupiry",
+    "description": "Deliciosa pizza de frango com catupiry",
+    "imagePath": "1669301772318-frango-catupiry.png",
+    "price": 41,
+    "ingredients": [
+      {
+        "name": "Frango",
+        "icon": "🍗",
+        "_id": "637f860ce9d9d4f00f7cebb3"
+      },
+      {
+        "name": "Catupiry",
+        "icon": "🥫",
+        "_id": "637f860ce9d9d4f00f7cebb4"
+      }
+    ],
+    "category": "6372e95eee844e00785a4539",
+    "__v": 0
+  },
+  {
+    "_id": "637f8702e9d9d4f00f7cebb7",
+    "name": "Pizza marguerita",
+    "description": "Deliciosa pizza marguerita",
+    "imagePath": "1669302018184-marguerita.png",
+    "price": 39,
+    "ingredients": [
+      {
+        "name": "Queijo",
+        "icon": "🧀",
+        "_id": "637f8702e9d9d4f00f7cebb8"
+      },
+      {
+        "name": "Tomate",
+        "icon": "🍅",
+        "_id": "637f8702e9d9d4f00f7cebb9"
+      },
+      {
+        "name": "Manjericão",
+        "icon": "🌿",
+        "_id": "637f8702e9d9d4f00f7cebba"
+      }
+    ],
+    "category": "6372e7efee844e00785a4534",
+    "__v": 0
+  },
+  {
+    "_id": "637f8761e9d9d4f00f7cebbc",
+    "name": "PIzza frango com catupiry",
+    "description": "Deliciosa pizza de frango com catupiry",
+    "imagePath": "1669302113410-frango-catupiry.png",
+    "price": 41,
+    "ingredients": [
+      {
+        "name": "Frango",
+        "icon": "🍗",
+        "_id": "637f8761e9d9d4f00f7cebbd"
+      },
+      {
+        "name": "Catupiry",
+        "icon": "🥫",
+        "_id": "637f8761e9d9d4f00f7cebbe"
+      }
+    ],
+    "category": "6372e7efee844e00785a4534",
+    "__v": 0
+  }
+]
+
+
+
+*/

@@ -17,45 +17,45 @@ export const GlobalStyles = createGlobalStyle`
     font-display: 'swap';
     font-style: 'normal';
     src: url('${GeneralSansRegularWoff2}') format('woff2'),
-          url('${GeneralSansRegularWoff}') format('woff'),
-          url('${GeneralSansRegularTtf}') format('truetype');
-  }
+    url('${GeneralSansRegularWoff}') format('woff'),
+    url('${GeneralSansRegularTtf}') format('truetype');
+}
 
-  @font-face {
+@font-face {
     font-family: 'GeneralSans';
     font-weight: 500;
     font-display: 'swap';
     font-style: 'normal';
     src: url('${GeneralSansMediumWoff2}') format('woff2'),
-          url('${GeneralSansMediumWoff}') format('woff'),
-          url('${GeneralSansMediumTtf}') format('truetype');
-  }
+    url('${GeneralSansMediumWoff}') format('woff'),
+    url('${GeneralSansMediumTtf}') format('truetype');
+}
 
-  @font-face {
+@font-face {
     font-family: 'GeneralSans';
     font-weight: 600;
     font-display: 'swap';
     font-style: 'normal';
     src: url('${GeneralSansSemiboldWoff2}') format('woff2'),
-          url('${GeneralSansSemiboldWoff}') format('woff'),
-          url('${GeneralSansSemiboldTtf}') format('truetype');
-  }
+    url('${GeneralSansSemiboldWoff}') format('woff'),
+    url('${GeneralSansSemiboldTtf}') format('truetype');
+}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: GeneralSans, sans-serif;
-  }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: GeneralSans, sans-serif;
+}
 
-  body {
+body {
     background: #fafafa;
     color: #333;
-  }
+}
 
-  button {
+button {
     cursor: pointer;
     font-size: 1rem;
     color: #333;
-  }
+}
 `;
