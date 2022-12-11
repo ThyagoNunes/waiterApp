@@ -7,6 +7,7 @@ interface TextProps {
   opacity?: number;
 }
 
+// Generics<TextPtops> = interface que recebe props
 export const Text = styled.Text<TextProps>`
   font-family: ${({ weight }) => weight ? `GeneralSans-${weight}` : 'GeneralSans-400'};
   color: ${({ color }) => color || '#333'};

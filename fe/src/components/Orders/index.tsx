@@ -11,7 +11,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Pizza de quatro queijos',
-          'imagePath': '1670199425951-quatro-queijos.png',
+          'imagePath': '1670722393225-quatro-queijos.png',
           'price': 40,
         },
         'quantity': 2,
@@ -20,7 +20,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Coca cola',
-          'imagePath': '1670194070524-coca-cola.png',
+          'imagePath': '1670723244448-coca-cola.png',
           'price': 7,
         },
         'quantity': 2,
@@ -37,7 +37,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Hamburguer',
-          'imagePath': '1670210748759-burger-molho-especial.png',
+          'imagePath': '1670722648678-burger-molho-especial.png',
           'price': 29.99,
         },
         'quantity': 2,
@@ -46,7 +46,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Suco de Laranja',
-          'imagePath': '1670194153143-suco-de-laranja.png',
+          'imagePath': '1670723284781-suco-de-laranja.png',
           'price': 7,
         },
         'quantity': 2,
@@ -63,7 +63,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Cerveja',
-          'imagePath': '1670194009327-cerveja.png',
+          'imagePath': '1670723194465-cerveja.png',
           'price': 7,
         },
         'quantity': 4,

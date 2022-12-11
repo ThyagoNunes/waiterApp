@@ -1,3 +1,19 @@
+Características únicas do RN: 
+1º Native não usa HTML eles tem seus próprios componentes. 
+    View seria a div
+2º <Text>Textos precisam ser renderizados com TEXT</Text>
+3º Não conseguimos estilos alinhados ou globais. Cada componente terá seu próprio estilo.
+
+native !== dom
+native 
+não vamos usar html. O native tem seus próprios componentes.
+No final do dia são gerados componentes nativos de cada sistema operacional;
+
+paralelo web x native 
+bloco de informações = native <View> dom <Div>
+
+=================================================================================================
+
 criar projeto react native
 yarn create expo-app app -t expo-template-blank-typescript
 
@@ -5,14 +21,22 @@ startar o expo
 sudo yarn start --tunnel
 
 intall tipagens and styled components and styled components react native
+yarn add styled-components
 yarn add -D @types/styled-components @types/styled-components-react-native
 
 yarn expo install react-native-svg
 lib native for read img .svg
 
+fontes
+yarn expo install expo-font
+@expo-google-fonts
 
-git rm --cached nome_modules/ -r ( diretório ) -f ( arquivo ) 
-git branch -M main
-git remote add origin https://github.com/ThyagoNunes/nameRepo.git
+flex: 1; ocupa toda área que não está sendo ocupada. Para isso funcionar, deve colocar flex: 1 no componente pai e colocar flex: 1  no componente filho deverá renderizar 100% da tela. 
+Renderizar listas no REACT NATIVE não deverá se usar o HOF .map(() => ()) e sim o import {FlatList} from 'react-native');
 
+INTL for ANDROI ( tapa buraco ) 
+yarn add intl
 
+App.tsx
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
