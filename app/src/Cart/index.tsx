@@ -17,14 +17,54 @@ import { formatCurrency } from '../utils/formatCurrency';
 import { PlusCircle } from '../components/Icons/PlusCircle';
 import { MinusCircle } from '../components/Icons/MinusCircle';
 import { Button } from '../components/Button';
+import { Product } from '../types/Products';
+import { OrderConfirmedModal } from '../components/OrderConfirmedModal';
+import { useState } from 'react';
+import { api } from '../utils/api';
 
 interface CartProps {
   cartItems: CartItem[];
+  onAdd: (product: Product) => void;
+  onDecrement: (product: Product) => void;
+  onConfirmOrder: () => void;
+  selectedTable: string,
 }
 
-export function Cart({ cartItems }: CartProps) {
+export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder, selectedTable}: CartProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const total = cartItems.reduce((acc, cartItem) => {
+    return acc + cartItem.quantity * cartItem.product.price;
+  }, 0);
+
+  async function handleConfirmOrder(){
+    setIsLoading(true);
+
+    await api.post('/orders',{
+      table: selectedTable,
+      products: cartItems.map((cartItem) => ({
+        product: cartItem.product._id,
+        quantity: cartItem.quantity,
+      }))
+    });
+
+    setIsLoading(false);
+    setIsModalVisible(true);
+  }
+
+  function handleOk() {
+    onConfirmOrder();
+    setIsModalVisible(false);
+  }
+
   return (
     <>
+      <OrderConfirmedModal
+        visible={isModalVisible}
+        onOk={handleOk}
+      />
+
       {cartItems.length > 0 && (
         <FlatList
           data={cartItems}
@@ -36,7 +76,7 @@ export function Cart({ cartItems }: CartProps) {
               <ProductContainer>
                 <Image
                   source={{
-                    uri: `http://192.168.100.4:3001/uploads/${cartItem.product.imagePath}`
+                    uri: `http://172.20.10.3:3001/uploads/${cartItem.product.imagePath}`
                   }}
                 />
 
@@ -54,11 +94,14 @@ export function Cart({ cartItems }: CartProps) {
                 </ProductDetails>
               </ProductContainer>
               <Actions>
-                <TouchableOpacity style={{ marginRight: 28 }}>
+                <TouchableOpacity
+                  style={{ marginRight: 28 }}
+                  onPress={() => onAdd(cartItem.product)}
+                >
                   <PlusCircle />
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => onDecrement(cartItem.product)}>
                   <MinusCircle />
                 </TouchableOpacity>
               </Actions>
@@ -72,7 +115,7 @@ export function Cart({ cartItems }: CartProps) {
           {cartItems.length > 0 ? (
             <>
               <Text color='#666'>Total</Text>
-              <Text size={20} weight="600">{formatCurrency(120)}</Text>
+              <Text size={20} weight="600">{formatCurrency(total)}</Text>
             </>
           ) : (
             <>
@@ -82,8 +125,9 @@ export function Cart({ cartItems }: CartProps) {
         </TotalContainer>
 
         <Button
-          onPress={() => alert('Confirmar pedido')}
+          onPress={handleConfirmOrder}
           disabled={cartItems.length === 0}
+          loading={isLoading}
         >
           confirmar pedido
         </Button>

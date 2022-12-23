@@ -19,6 +19,8 @@ import { listOrder } from './app/useCases/orders/listOrder';
 import { createOrder } from './app/useCases/orders/createOrder';
 import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
 import { cancelOrder } from './app/useCases/orders/cancelOrder';
+import { changeProductCategory } from './app/useCases/products/changeProductCategory';
+import { changeProductImagePath } from './app/useCases/products/changeProductImagePath';
 
 export const router = Router();
 
@@ -59,6 +61,12 @@ router.post('/products', upload.single('image'), createProduct);
 
 // Update product
 router.put('/products/:productId', upload.single('image'), updateProduct);
+
+// Change category product
+router.patch('/products/:productId', changeProductCategory);
+
+// Change imagepath product
+router.patch('/uploads/:productId', changeProductImagePath);
 
 // Delete product
 router.delete('/products/:productId', deleteProduct);

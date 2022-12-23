@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FlatList } from 'react-native';
+import { Category } from '../../types/Category';
 
-import { products } from '../../mocks/products';
 import { Product } from '../../types/Products';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PlusCircle } from '../Icons/PlusCircle';
@@ -18,9 +18,11 @@ import {
 
 interface MenuProps {
   onAddToCart: (product: Product) => void
+  products: Product[];
+  categories: Category[];
 }
 
-export function Menu({onAddToCart}: MenuProps) {
+export function Menu({onAddToCart, products}: MenuProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<null | Product>(null);
 
@@ -49,7 +51,7 @@ export function Menu({onAddToCart}: MenuProps) {
           <ProductContainer onPress={() => handleOpenModal(product)}>
             <ProductImage
               source={{
-                uri: `http://192.168.100.4:3001/uploads/${product.imagePath}`
+                uri: `http://172.20.10.3:3001/uploads/${product.imagePath}`
               }}
             />
 
