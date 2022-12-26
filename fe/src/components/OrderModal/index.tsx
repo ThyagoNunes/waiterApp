@@ -9,9 +9,19 @@ interface OrderModalProps {
   visible: boolean
   order: Order | null
   onClose: () => void;
+  onCancelOrder: () => Promise<void>;
+  isLoading: boolean;
+  onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({ visible, order, onClose }: OrderModalProps) {
+export function OrderModal({
+  visible,
+  order,
+  onClose,
+  onCancelOrder,
+  isLoading,
+  onChangeOrderStatus
+}: OrderModalProps) {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -94,21 +104,33 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
         </OrderDetails>
 
         <Actions>
-          <button type="button" className="primary">
-            <span>
-              {order.status === 'WAITING' && '👨‍🍳'}
-              {order.status === 'IN_PRODUCTION' && '✅'}
-              {order.status === 'DONE' && '💁'}
-            </span>
+          {order.status !== 'DONE' && (
+            <button
+              type="button"
+              className="primary"
+              disabled={isLoading}
+              onClick={onChangeOrderStatus}
+            >
+              <span>
+                {order.status === 'WAITING' && '👨‍🍳'}
+                {order.status === 'IN_PRODUCTION' && '✅'}
 
-            <strong>
-              {order.status === 'WAITING' && 'Iniciar Produção'}
-              {order.status === 'IN_PRODUCTION' && 'Pedido Pronto'}
-              {order.status === 'DONE' && 'Garçom!'}
-            </strong>
-          </button>
+              </span>
 
-          <button type="button" className="secondary">
+              <strong>
+                {order.status === 'WAITING' && 'Iniciar Produção'}
+                {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
+
+              </strong>
+            </button>
+          )}
+
+          <button
+            type="button"
+            className="secondary"
+            onClick={onCancelOrder}
+            disabled={isLoading}
+          >
             Cancelar Pedido
           </button>
         </Actions>
