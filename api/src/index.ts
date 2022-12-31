@@ -10,7 +10,10 @@ const app = express();
 const server = http.createServer(app);
 export const io = new Server(server);
 
-mongoose.connect('mongodb://localhost:27017')       // CONNECT DB
+/* mongoose.connect('mongodb://localhost:27017')       // CONNECT DB - docker */
+const mongoDbUrl = 'mongodb://mongo:0tkMin4WiDOng4PWEe0v@containers-us-west-122.railway.app:6628';
+mongoose.connect(mongoDbUrl)       // CONNECT DB
+
   .then(() => {
     const port = 3001;
 

@@ -78,7 +78,7 @@ export function OrdersBoard({ icon, title, orders, onCancelOrder, onChangeOrderS
           <OrdersContainer>
             {orders.map((order) => (
               <button type='button' key={order._id} onClick={() => handleOpenModal(order)}>
-                <span>{order.products.length} itens</span>
+                <span>aaaaaaa{order.products.length} itens</span>
                 <strong>Mesa {order.table}</strong>
               </button>
             ))}
