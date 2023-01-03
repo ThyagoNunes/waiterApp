@@ -15,7 +15,7 @@ export const io = new Server(server);
 mongoose.connect('mongodb://mongo:0tkMin4WiDOng4PWEe0v@containers-us-west-122.railway.app:6628')       // CONNECT DB
 
   .then(() => {
-    const port = 3001;
+    const port = 6628;
 
     app.use((req, res, next) =>  {
       res.setHeader('Access-Control-Allow-Origin', '*');
