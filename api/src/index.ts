@@ -2,23 +2,23 @@ import path from 'node:path';
 import http from 'node:http';
 
 import express from 'express';
-import { config } from 'dotenv';
 import mongoose from 'mongoose'; // ODM
+import { config } from 'dotenv';
 import { Server } from 'socket.io';
-
 import { router } from './router';
 
-config();
 const app = express();
 const server = http.createServer(app);
 export const io = new Server(server);
 
-/* mongoose.connect('mongodb://localhost:27017')       // CONNECT DB - docker */
-/* const mongoDbUrl = 'mongodb://mongo:0tkMin4WiDOng4PWEe0v@containers-us-west-122.railway.app:6628'; before */
+config();
+const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT } = process.env;
+const url =
+  `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${MONGOHOST}:${MONGOPORT}` ||
+  'localhost:27017';
+
 mongoose
-  .connect(
-    'mongodb://mongo:0tkMin4WiDOng4PWEe0v@containers-us-west-122.railway.app:6628'
-  ) // CONNECT DB
+  .connect(url)
 
   .then(() => {
     const port = process.env.PORT || 8000;
