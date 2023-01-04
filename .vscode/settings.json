@@ -1,0 +1,32 @@
+{
+    "workbench.colorTheme": "Dracula Pro",
+    "workbench.settings.openDefaultSettings": true,
+    "workbench.settings.useSplitJSON": true,
+    "workbench.settings.openDefaultKeybindings": true,
+       "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.fontFamily": "Fira Code",
+    "editor.fontSize": 12,
+    "editor.fontLigatures": true,
+    "editor.formatOnSave": true,
+    "window.zoomLevel": 1,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.editor.splitInGroupLayout": "vertical",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+},
+
+
+
+colorize.languages": [
+    "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+    "json",
+    "html",
+    "css"
+  ]
