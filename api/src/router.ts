@@ -3,13 +3,16 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
+import { GetProductsController } from '../src/controllers/get-products/get-products';
+import { MongoGetProductsRepository } from '../src/repositories/get-products/mongo-get-products';
+
 import { createCategory } from './app/useCases/categories/createCategory';
 import { listCategories } from './app/useCases/categories/listCategories';
 import { listCategory } from './app/useCases/categories/listCategory';
 import { updateCategory } from './app/useCases/categories/updateCategory';
 import { deleteCategory } from './app/useCases/categories/deleteCategory';
 import { createProduct } from './app/useCases/products/createProduct';
-import { listProducts } from './app/useCases/products/listProducts';
+// import { listProducts } from './app/useCases/products/listProducts';
 import { listProduct } from './app/useCases/products/listProduct';
 import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
 import { updateProduct } from './app/useCases/products/updateProduct';
@@ -24,12 +27,14 @@ import { changeProductImagePath } from './app/useCases/products/changeProductIma
 
 export const router = Router();
 
-const upload = multer({     // upload arquivos
+const upload = multer({
+  // upload arquivos
   storage: multer.diskStorage({
     destination(req, file, callback) {
       callback(null, path.resolve(__dirname, '../', 'uploads'));
     },
-    filename(req, file, callback) {     // FILENAME FOLLOW STANDARD
+    filename(req, file, callback) {
+      // FILENAME FOLLOW STANDARD
       callback(null, `${Date.now()}-${file.originalname}`);
     },
   }),
@@ -51,7 +56,15 @@ router.put('/categories/:categoryId', updateCategory);
 router.delete('/categories/:categoryId', deleteCategory);
 
 // List products
-router.get('/products', listProducts);
+router.get('/products', async (req, res) => {
+  const mongoGetProductsRepository = new MongoGetProductsRepository();
+  const getProductsControler = new GetProductsController(
+    mongoGetProductsRepository
+  );
+  const { statusCode, body } = await getProductsControler.handle();
+
+  res.send(body).status(statusCode);
+});
 
 // list product
 router.get('/products/:productId', listProduct);
