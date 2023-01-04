@@ -1,4 +1,4 @@
-export interface Product {
+export interface IProduct {
   name: string;
   description: string;
   imagePath: string;
@@ -7,5 +7,5 @@ export interface Product {
     name: string;
     icon: string;
   }[];
-  category: string;
+  category: any;
 }
