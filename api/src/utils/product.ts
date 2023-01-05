@@ -3,9 +3,9 @@ export interface IProduct {
   description: string;
   imagePath: string;
   price: number;
-  ingredients: {
+  ingredients?: {
     name: string;
     icon: string;
   }[];
-  category: any;
+  category: string | any;
 }

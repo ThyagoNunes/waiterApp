@@ -3,8 +3,8 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { GetProductsController } from '../src/controllers/get-products/get-products';
-import { MongoGetProductsRepository } from '../src/repositories/get-products/mongo-get-products';
+import { GetProductsController } from './controllers/product/get-products/get-products';
+import { MongoGetProducts } from '../src/repositories/get-products/mongo-get-products';
 
 import { createCategory } from './app/useCases/categories/createCategory';
 import { listCategories } from './app/useCases/categories/listCategories';
@@ -57,7 +57,7 @@ router.delete('/categories/:categoryId', deleteCategory);
 
 // List products
 router.get('/products', async (req, res) => {
-  const mongoGetProductsRepository = new MongoGetProductsRepository();
+  const mongoGetProductsRepository = new MongoGetProducts();
   const getProductsControler = new GetProductsController(
     mongoGetProductsRepository
   );
