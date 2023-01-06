@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '../../protocols';
 import { IProduct } from '../../../utils/product';
 
-export interface IProductCreateController {
+export interface ICreateProductController {
   handle(
     httpRequest: HttpRequest<ICreateProductRepositoryParams>
   ): Promise<HttpResponse<IProduct>>;

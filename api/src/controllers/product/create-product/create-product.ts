@@ -1,19 +1,18 @@
 import { IProduct } from '../../../utils/product';
 import { HttpRequest, HttpResponse } from '../../protocols';
+import { IFindProductNameRepository } from '../find-product-name/protocols';
 import {
-  IProductCreateController,
+  ICreateProductController,
   ICreateProductRepository,
   ICreateProductRepositoryParams,
 } from './protocols';
 
-/* import {
-    ,
-} from '../get-product/protocols' */
-
-export class CreateProductController implements IProductCreateController {
+export class CreateProductController implements ICreateProductController {
   constructor(
-    private readonly createProductRepository: ICreateProductRepository // private readonly getProductRepository: IProductGetRepository
+    private readonly createProductRepository: ICreateProductRepository, // private readonly getProductRepository: IProductGetRepository
+    private readonly findProductNameRepository: IFindProductNameRepository
   ) {}
+
   async handle(
     httpRequest: HttpRequest<ICreateProductRepositoryParams>
   ): Promise<HttpResponse<IProduct>> {
@@ -25,7 +24,10 @@ export class CreateProductController implements IProductCreateController {
         };
       }
 
-      //   const findProductName = await this.
+      const { name } = httpRequest.body;
+      const findProductName = await this.findProductNameRepository.getName(
+        name
+      );
 
       const product = await this.createProductRepository.createProduct(
         httpRequest.body

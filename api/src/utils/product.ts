@@ -7,5 +7,5 @@ export interface IProduct {
     name: string;
     icon: string;
   }[];
-  category: string | any;
+  category?: string;
 }
