@@ -3,8 +3,11 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { GetProductsController } from './controllers/product/get-products/get-products';
-import { MongoGetProducts } from '../src/repositories/get-products/mongo-get-products';
+import { GetProductsController } from './use-case/products/get-products';
+import { MongoGetProducts } from './repositories/mongo/mongo-get-products';
+
+import { GetProductController } from './use-case/products/get-product/get-product';
+import { MongoGetProduct } from './repositories/mongo/mongo-get-product';
 
 import { createCategory } from './app/useCases/categories/createCategory';
 import { listCategories } from './app/useCases/categories/listCategories';
@@ -13,7 +16,7 @@ import { updateCategory } from './app/useCases/categories/updateCategory';
 import { deleteCategory } from './app/useCases/categories/deleteCategory';
 import { createProduct } from './app/useCases/products/createProduct';
 // import { listProducts } from './app/useCases/products/listProducts';
-import { listProduct } from './app/useCases/products/listProduct';
+// import { listProduct } from './app/useCases/products/listProduct';
 import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
 import { updateProduct } from './app/useCases/products/updateProduct';
 import { deleteProduct } from './app/useCases/products/deleteProduct';
@@ -61,13 +64,24 @@ router.get('/products', async (req, res) => {
   const getProductsControler = new GetProductsController(
     mongoGetProductsRepository
   );
-  const { statusCode, body } = await getProductsControler.handle();
+  const { body, statusCode } = await getProductsControler.handle();
 
   res.send(body).status(statusCode);
 });
 
-// list product
-router.get('/products/:productId', listProduct);
+// list product GetProductController
+router.get('/products/:idProduct', async (req, res) => {
+  const { idProduct } = req.params;
+
+  const mongoGetProductRepository = new MongoGetProduct();
+  const getProductController = new GetProductController(
+    mongoGetProductRepository
+  );
+
+  const product = await getProductController.handle({ params: { idProduct } });
+
+  res.send({ product }).status(200);
+});
 
 // Create product
 router.post('/products', upload.single('image'), createProduct);

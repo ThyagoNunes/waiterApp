@@ -9,7 +9,7 @@ export async function createOrder(req: Request, res: Response) {
 
     if (!table && !products) {
       return res.status(400).json({
-        error: 'TABLE & PRODUCTS are required'
+        error: 'TABLE & PRODUCTS are required',
       });
     }
 
