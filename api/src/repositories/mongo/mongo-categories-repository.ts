@@ -9,16 +9,17 @@ import {
   CategoriesRepositoryListProductsByCategory,
 } from '../categories-repository';
 
-export class mongoCategoriesRepository implements CategoriesRepository {
+export class MongoCategoriesRepository implements CategoriesRepository {
   async index() {
     const categories = await Category.find();
 
     return categories;
   }
 
-  async show({ id }: CategoriesRepositoryShowData) {
-    const categories = await Category.findById({ id });
+  async show({ _id }: CategoriesRepositoryShowData) {
+    const categories = await Category.findById({ _id });
 
+    console.log(categories);
     return categories;
   }
   async create({ category }: CategoriesRepositoryCreateData) {
@@ -29,9 +30,9 @@ export class mongoCategoriesRepository implements CategoriesRepository {
 
     return categories;
   }
-  async update({ id, category }: CategoriesRepositoryUpdateData) {
+  async update({ _id, category }: CategoriesRepositoryUpdateData) {
     const categories = await Category.findByIdAndUpdate(
-      { id },
+      { _id },
       {
         name: category.name,
         icon: category.icon,
@@ -40,14 +41,14 @@ export class mongoCategoriesRepository implements CategoriesRepository {
 
     return categories;
   }
-  async delete({ id }: CategoriesRepositoryDeleteData) {
-    await Category.findByIdAndDelete({ id });
+  async delete({ _id }: CategoriesRepositoryDeleteData) {
+    await Category.findByIdAndDelete({ _id });
 
     return 'Deleted';
   }
 
-  async indexProducts({ id }: CategoriesRepositoryListProductsByCategory) {
-    const products = await Product.find().where('category').equals({ id });
+  async indexProducts({ _id }: CategoriesRepositoryListProductsByCategory) {
+    const products = await Product.find().where('category').equals({ _id });
 
     return products;
   }

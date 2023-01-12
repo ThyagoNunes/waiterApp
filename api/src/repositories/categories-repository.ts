@@ -2,7 +2,7 @@ import { Category } from '../app/models/Category';
 import { ICategory } from '../utils/category';
 
 export interface CategoriesRepositoryShowData {
-  id: string;
+  _id: string | any;
 }
 
 export interface CategoriesRepositoryCreateData {
@@ -10,16 +10,16 @@ export interface CategoriesRepositoryCreateData {
 }
 
 export interface CategoriesRepositoryUpdateData {
-  id?: string;
+  _id?: string;
   category: ICategory;
 }
 
 export interface CategoriesRepositoryDeleteData {
-  id: string;
+  _id: string;
 }
 
 export interface CategoriesRepositoryListProductsByCategory {
-  id: string;
+  _id: string;
 }
 
 type Category = typeof Category;

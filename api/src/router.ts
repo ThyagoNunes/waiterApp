@@ -3,20 +3,11 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { GetProductsController } from './use-case/products/get-products';
-import { MongoGetProducts } from './repositories/mongo/mongo-get-products';
-
-import { GetProductController } from './use-case/products/get-product/get-product';
-import { MongoGetProduct } from './repositories/mongo/mongo-get-product';
-
 import { createCategory } from './app/useCases/categories/createCategory';
-import { listCategories } from './app/useCases/categories/listCategories';
-import { listCategory } from './app/useCases/categories/listCategory';
+// import { listCategory } from './app/useCases/categories/listCategory';
 import { updateCategory } from './app/useCases/categories/updateCategory';
 import { deleteCategory } from './app/useCases/categories/deleteCategory';
 import { createProduct } from './app/useCases/products/createProduct';
-// import { listProducts } from './app/useCases/products/listProducts';
-// import { listProduct } from './app/useCases/products/listProduct';
 import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
 import { updateProduct } from './app/useCases/products/updateProduct';
 import { deleteProduct } from './app/useCases/products/deleteProduct';
@@ -27,6 +18,11 @@ import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
 import { cancelOrder } from './app/useCases/orders/cancelOrder';
 import { changeProductCategory } from './app/useCases/products/changeProductCategory';
 import { changeProductImagePath } from './app/useCases/products/changeProductImagePath';
+
+import { ListCategoriesUseCase } from './use-case/categories/list-categories-use-case';
+
+import { MongoCategoriesRepository } from './repositories/mongo/mongo-categories-repository';
+import { ListCategoryUseCase } from './use-case/categories/list-category-use-case';
 
 export const router = Router();
 
@@ -44,10 +40,32 @@ const upload = multer({
 });
 
 // List categories
-router.get('/categories', listCategories);
+router.get('/categories', async (req, res) => {
+  const mongoCategoriesRepositories = new MongoCategoriesRepository();
+  const listCategoriesUseCase = new ListCategoriesUseCase(
+    mongoCategoriesRepositories
+  );
+  const categories = await listCategoriesUseCase.index();
+
+  return res.status(200).send({ categories });
+});
 
 // List categoriy
-router.get('/categories/:categoryId', listCategory);
+router.get('/categories/:_id', async (req, res) => {
+  const { _id } = req.params;
+
+  const mongoCategoriesRepository = new MongoCategoriesRepository();
+  const listCategoryUseCase = new ListCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const category = await listCategoryUseCase.show({ _id });
+
+  if (!category) {
+    return res.status(400).json('Category not found');
+  }
+  res.status(200).send({ category });
+});
 
 // Create category
 router.post('/categories', createCategory);
@@ -59,7 +77,7 @@ router.put('/categories/:categoryId', updateCategory);
 router.delete('/categories/:categoryId', deleteCategory);
 
 // List products
-router.get('/products', async (req, res) => {
+/* router.get('/products', async (req, res) => {
   const mongoGetProductsRepository = new MongoGetProducts();
   const getProductsControler = new GetProductsController(
     mongoGetProductsRepository
@@ -67,10 +85,10 @@ router.get('/products', async (req, res) => {
   const { body, statusCode } = await getProductsControler.handle();
 
   res.send(body).status(statusCode);
-});
+}); */
 
 // list product GetProductController
-router.get('/products/:idProduct', async (req, res) => {
+/* router.get('/products/:idProduct', async (req, res) => {
   const { idProduct } = req.params;
 
   const mongoGetProductRepository = new MongoGetProduct();
@@ -81,7 +99,7 @@ router.get('/products/:idProduct', async (req, res) => {
   const product = await getProductController.handle({ params: { idProduct } });
 
   res.send({ product }).status(200);
-});
+}); */
 
 // Create product
 router.post('/products', upload.single('image'), createProduct);
@@ -115,3 +133,6 @@ router.patch('/orders/:orderId', changeOrderStatus);
 
 // Delete/Cancel order
 router.delete('/orders/:orderId', cancelOrder);
+
+// import { listProducts } from './app/useCases/products/listProducts';
+// import { listProduct } from './app/useCases/products/listProduct';
