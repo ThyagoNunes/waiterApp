@@ -7,6 +7,7 @@ import {
   CategoriesRepositoryUpdateData,
   CategoriesRepositoryDeleteData,
   CategoriesRepositoryListProductsByCategory,
+  CategoriesRepositoryFindByName,
 } from '../categories-repository';
 
 export class MongoCategoriesRepository implements CategoriesRepository {
@@ -51,5 +52,12 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     const products = await Product.find().where('category').equals({ _id });
 
     return products;
+  }
+
+  async findByName({ name }: CategoriesRepositoryFindByName) {
+    const nameFind = await Category.findById({ name });
+
+    console.log(`aaaa ${{ nameFind }}`);
+    return nameFind;
   }
 }

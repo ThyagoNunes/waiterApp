@@ -3,7 +3,7 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { createCategory } from './app/useCases/categories/createCategory';
+// import { createCategory } from './app/useCases/categories/createCategory';
 // import { listCategory } from './app/useCases/categories/listCategory';
 import { updateCategory } from './app/useCases/categories/updateCategory';
 import { deleteCategory } from './app/useCases/categories/deleteCategory';
@@ -23,6 +23,8 @@ import { ListCategoriesUseCase } from './use-case/categories/list-categories-use
 
 import { MongoCategoriesRepository } from './repositories/mongo/mongo-categories-repository';
 import { ListCategoryUseCase } from './use-case/categories/list-category-use-case';
+import { CreateCategoryUseCase } from './use-case/categories/create-category-use-case';
+import { FindNameCategoryUseCase } from './use-case/categories/find-name-category-use-case';
 
 export const router = Router();
 
@@ -68,7 +70,37 @@ router.get('/categories/:_id', async (req, res) => {
 });
 
 // Create category
-router.post('/categories', createCategory);
+router.post('/categories', async (req, res) => {
+  const { name, icon } = req.body;
+
+  if (!name || !icon) {
+    return res.status(400).json('NAME & ICON is required');
+  }
+
+  const mongoCategoriesRepository = new MongoCategoriesRepository();
+
+  const findNameCategoryUseCase = new FindNameCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const nameExists = await findNameCategoryUseCase.findByName(name);
+  console.log('chegou');
+  console.log('a' + { nameExists });
+
+  if (nameExists) {
+    return res.status(400).send(`Name ${name} is already exists`);
+  }
+
+  const createCategoryUseCase = new CreateCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const newCategory = await createCategoryUseCase.create({
+    category: { name, icon },
+  });
+
+  return res.status(200).send({ newCategory });
+});
 
 // Update category
 router.put('/categories/:categoryId', updateCategory);
