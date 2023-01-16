@@ -271,7 +271,7 @@ router.post('/products', upload.single('image'), async (req, res) => {
   );
   const newProduct = await createProductUseCase.create({ product });
 
-  res.status(200).send({ newProduct });
+  res.status(200).send(newProduct);
 });
 
 // Create product
