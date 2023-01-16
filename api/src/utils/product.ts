@@ -1,4 +1,5 @@
 export interface IProduct {
+  _id?: string;
   name: string;
   description: string;
   imagePath: string;
@@ -7,5 +8,5 @@ export interface IProduct {
     name: string;
     icon: string;
   }[];
-  category?: string;
+  category: string;
 }

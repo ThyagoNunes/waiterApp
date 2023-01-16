@@ -2,36 +2,50 @@ import { Product } from '../app/models/Product';
 import { IProduct } from '../utils/product';
 
 export interface ProductsRepositoryShowData {
-  id: string;
+  _id: string;
 }
 
 export interface ProductsRepositoryCreateData {
-  product: IProduct;
+  _id?: string;
+  name: string;
+  description: string;
+  imagePath: string;
+  price: number;
+  ingredients?: {
+    name: string;
+    icon: string;
+  }[];
+  category?: string;
 }
 
 export interface ProductsRepositoryUpdateData {
-  id: string;
+  _id: string;
   product: IProduct;
 }
 
 export interface ProductsRepositoryChangeCategoryData {
-  id: string;
-  idCategory: string;
+  _id: string;
+  _idCategory: string;
 }
 
 export interface ProductsRepositoryDeleteData {
-  id: string;
+  _id: string;
+}
+
+export interface ProductsRepositoryFindName {
+  name: string;
 }
 
 type Product = typeof Product;
 
 export interface ProductsRepository {
-  index: () => Promise<Product[] | ''>;
-  show: (data: ProductsRepositoryShowData) => Promise<Product | string>;
-  create: (data: ProductsRepositoryCreateData) => Promise<Product>;
-  update: (data: ProductsRepositoryUpdateData) => Promise<Product | string>;
-  delete: (data: ProductsRepositoryDeleteData) => Promise<Product | string>;
+  index: () => Promise<Product[] | any>;
+  show: (data: ProductsRepositoryShowData) => Promise<Product | any>;
+  create: (data: ProductsRepositoryCreateData) => Promise<Product | any>;
+  update: (data: ProductsRepositoryUpdateData) => Promise<Product | any>;
+  delete: (data: ProductsRepositoryDeleteData) => Promise<Product | any>;
+  findByName: (data: ProductsRepositoryFindName) => Promise<Product | any>;
   updateCategory: (
     data: ProductsRepositoryChangeCategoryData
-  ) => Promise<Product | string>;
+  ) => Promise<Product | any>;
 }

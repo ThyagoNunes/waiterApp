@@ -5,10 +5,11 @@ import multer from 'multer';
 
 // import { createCategory } from './app/useCases/categories/createCategory';
 // import { listCategory } from './app/useCases/categories/listCategory';
-import { updateCategory } from './app/useCases/categories/updateCategory';
-import { deleteCategory } from './app/useCases/categories/deleteCategory';
-import { createProduct } from './app/useCases/products/createProduct';
-import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
+//import { updateCategory } from './app/useCases/categories/updateCategory';
+//import { deleteCategory } from './app/useCases/categories/deleteCategory';
+//import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
+// import { listProducts } from './app/useCases/products/listProducts';
+//import { createProduct } from './app/useCases/products/createProduct';
 import { updateProduct } from './app/useCases/products/updateProduct';
 import { deleteProduct } from './app/useCases/products/deleteProduct';
 import { listOrders } from './app/useCases/orders/listOrders';
@@ -19,12 +20,21 @@ import { cancelOrder } from './app/useCases/orders/cancelOrder';
 import { changeProductCategory } from './app/useCases/products/changeProductCategory';
 import { changeProductImagePath } from './app/useCases/products/changeProductImagePath';
 
-import { ListCategoriesUseCase } from './use-case/categories/list-categories-use-case';
-
 import { MongoCategoriesRepository } from './repositories/mongo/mongo-categories-repository';
+import { MongoProductsRepository } from './repositories/mongo/mongo-products-repository';
+
+import { ListCategoriesUseCase } from './use-case/categories/list-categories-use-case';
 import { ListCategoryUseCase } from './use-case/categories/list-category-use-case';
 import { CreateCategoryUseCase } from './use-case/categories/create-category-use-case';
 import { FindNameCategoryUseCase } from './use-case/categories/find-name-category-use-case';
+import { UpdateCategoryUseCase } from './use-case/categories/update-category-use-case';
+import { DeleteCategoryUseCase } from './use-case/categories/delete-category-use-case';
+
+import { ListProductsUseCase } from './use-case/products/list-products-use-case';
+import { ListProductUseCase } from './use-case/products/list-product-use-case';
+import { FindProductsByCategoryUseCase } from './use-case/categories/find-products-by-categories-use-case';
+import { CreateProductUseCase } from './use-case/products/create-product-use-case';
+import { FindProductNameUseCase } from './use-case/products/find-product-name-use-case';
 
 export const router = Router();
 
@@ -49,10 +59,10 @@ router.get('/categories', async (req, res) => {
   );
   const categories = await listCategoriesUseCase.index();
 
-  return res.status(200).send({ categories });
+  return res.status(200).send(categories);
 });
 
-// List categoriy
+// List category
 router.get('/categories/:_id', async (req, res) => {
   const { _id } = req.params;
 
@@ -64,9 +74,9 @@ router.get('/categories/:_id', async (req, res) => {
   const category = await listCategoryUseCase.show({ _id });
 
   if (!category) {
-    return res.status(400).json('Category not found');
+    return res.status(400).json({ error: 'Category not found' });
   }
-  res.status(200).send({ category });
+  res.status(200).send(category);
 });
 
 // Create category
@@ -74,7 +84,7 @@ router.post('/categories', async (req, res) => {
   const { name, icon } = req.body;
 
   if (!name || !icon) {
-    return res.status(400).json('NAME & ICON is required');
+    return res.status(400).json({ error: 'NAME & ICON is required' });
   }
 
   const mongoCategoriesRepository = new MongoCategoriesRepository();
@@ -83,11 +93,11 @@ router.post('/categories', async (req, res) => {
     mongoCategoriesRepository
   );
 
-  const nameExists = await findNameCategoryUseCase.findByName(name);
-  console.log('chegou');
-  console.log('a' + { nameExists });
+  const nameReturned = await findNameCategoryUseCase.findByName({
+    name,
+  });
 
-  if (nameExists) {
+  if (nameReturned) {
     return res.status(400).send(`Name ${name} is already exists`);
   }
 
@@ -102,39 +112,170 @@ router.post('/categories', async (req, res) => {
   return res.status(200).send({ newCategory });
 });
 
-// Update category
-router.put('/categories/:categoryId', updateCategory);
+// Updated category
+router.put('/categories/:_id', async (req, res) => {
+  const { _id } = req.params;
+  const { name, icon } = req.body;
+
+  const category = { name, icon };
+
+  if (!name || !icon) {
+    return res.status(400).json({ error: 'NAME & ICON is required' });
+  }
+
+  const mongoCategoriesRepository = new MongoCategoriesRepository();
+  const listCategoryUseCase = new ListCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const categoryExists = await listCategoryUseCase.show({ _id });
+
+  if (!categoryExists) {
+    return res.status(400).json({ error: 'Category not found' });
+  }
+
+  const findNameCategoryUseCase = new FindNameCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const nameCategoryExists = await findNameCategoryUseCase.findByName({ name });
+
+  if (nameCategoryExists && name !== nameCategoryExists) {
+    return res.status(400).json(`This ${name} from category is already in use`);
+  }
+
+  const updateCategoryUseCase = new UpdateCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const updatedCategory = await updateCategoryUseCase.update({ _id, category });
+
+  return res.status(200).send({ updatedCategory });
+});
 
 // Delete category
-router.delete('/categories/:categoryId', deleteCategory);
+router.delete('/categories/:_id', async (req, res) => {
+  const { _id } = req.params;
+
+  const mongoCategoriesRepository = new MongoCategoriesRepository();
+  const listCategoriesUseCase = new ListCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const categoryExists = await listCategoriesUseCase.show({ _id });
+
+  if (!categoryExists) {
+    return res.status(400).json(`This ${categoryExists} not exists`);
+  }
+
+  const deleteCategoryUseCase = new DeleteCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  await deleteCategoryUseCase.delete({ _id });
+
+  res.status(204).send('Deleted');
+});
+
+// List products by category
+router.get('/categories/:_id/products', async (req, res) => {
+  const { _id } = req.params;
+
+  if (!_id) {
+    return res.status(400).json({ error: '_idCategory is required' });
+  }
+
+  const mongoCategoriesRepository = new MongoCategoriesRepository();
+  const listCategoryUseCase = new ListCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const categoryExists = await listCategoryUseCase.show({ _id });
+
+  if (!categoryExists) {
+    return res.status(400).json({ error: 'This category not exists' });
+  }
+
+  const findProductsByCategoriesUseCase = new FindProductsByCategoryUseCase(
+    mongoCategoriesRepository
+  );
+
+  const productsByCategory = await findProductsByCategoriesUseCase.findByName({
+    _id,
+  });
+
+  res.status(200).send(productsByCategory);
+});
 
 // List products
-/* router.get('/products', async (req, res) => {
-  const mongoGetProductsRepository = new MongoGetProducts();
-  const getProductsControler = new GetProductsController(
-    mongoGetProductsRepository
-  );
-  const { body, statusCode } = await getProductsControler.handle();
+router.get('/products', async (req, res) => {
+  const mongoProductsRepository = new MongoProductsRepository();
+  const listProductsUseCase = new ListProductsUseCase(mongoProductsRepository);
 
-  res.send(body).status(statusCode);
-}); */
+  const products = await listProductsUseCase.index();
 
-// list product GetProductController
-/* router.get('/products/:idProduct', async (req, res) => {
-  const { idProduct } = req.params;
+  res.status(200).send(products);
+});
 
-  const mongoGetProductRepository = new MongoGetProduct();
-  const getProductController = new GetProductController(
-    mongoGetProductRepository
-  );
+// List product
+router.get('/products/:_id', async (req, res) => {
+  const { _id } = req.params;
 
-  const product = await getProductController.handle({ params: { idProduct } });
+  const mongoProductsRepository = new MongoProductsRepository();
 
-  res.send({ product }).status(200);
-}); */
+  const listProductUseCase = new ListProductUseCase(mongoProductsRepository);
+  const product = await listProductUseCase.show({ _id });
+
+  res.status(200).send(product);
+});
 
 // Create product
-router.post('/products', upload.single('image'), createProduct);
+router.post('/products', upload.single('image'), async (req, res) => {
+  const imagePath = req.file?.filename;
+  const { name, description, price, ingredients, category } = req.body;
+
+  if (!name || !description || !imagePath || !price || !category) {
+    return res.status(400).json({
+      error:
+        'Inputs NAME, DESCRIPTION, IMAGEPATH, PRICE && CATEGORY ARE REQUIRED',
+    });
+  }
+
+  console.log('validou inputs');
+  const product = {
+    name,
+    description,
+    imagePath,
+    price,
+    ingredients,
+    category,
+  };
+
+  const mongoProductsRepository = new MongoProductsRepository();
+
+  const findProductNameUseCase = new FindProductNameUseCase(
+    mongoProductsRepository
+  );
+
+  const existsName = await findProductNameUseCase.findByName({ name });
+
+  if (existsName) {
+    return res
+      .status(400)
+      .json({ error: `This name ${name} is already exists` });
+  }
+
+  console.log('verificou a existência do produto');
+  const createProductUseCase = new CreateProductUseCase(
+    mongoProductsRepository
+  );
+  const newProduct = await createProductUseCase.create({ product });
+
+  res.status(200).send({ newProduct });
+});
+
+// Create product
+//router.post('/products', upload.single('image'), createProduct);
 
 // Update product
 router.put('/products/:productId', upload.single('image'), updateProduct);
@@ -149,7 +290,7 @@ router.patch('/uploads/:productId', changeProductImagePath);
 router.delete('/products/:productId', deleteProduct);
 
 // Get products by category
-router.get('/categories/:categoryId/products', listProductsByCategory);
+//router.get('/categories/:categoryId/products', listProductsByCategory);
 
 // List orders
 router.get('/orders', listOrders);

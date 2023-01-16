@@ -9,10 +9,10 @@ export class FindNameCategoryUseCase {
 
   async findByName({ name }: FindNameCategoryUseCaseName) {
     try {
-      const findName = await this.categoriesRepository.findByName({ name });
-
-      console.log('chegou 2');
-      return findName;
+      const nameCategory = await this.categoriesRepository.findByName({
+        name,
+      });
+      return nameCategory;
     } catch (error) {
       console.log(error);
     }

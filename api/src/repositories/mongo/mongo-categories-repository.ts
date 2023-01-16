@@ -20,13 +20,13 @@ export class MongoCategoriesRepository implements CategoriesRepository {
   async show({ _id }: CategoriesRepositoryShowData) {
     const categories = await Category.findById({ _id });
 
-    console.log(categories);
     return categories;
   }
   async create({ category }: CategoriesRepositoryCreateData) {
     const categories = await Category.create({
       name: category.name,
       icon: category.icon,
+      _id: category?._id,
     });
 
     return categories;
@@ -48,16 +48,18 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     return 'Deleted';
   }
 
-  async indexProducts({ _id }: CategoriesRepositoryListProductsByCategory) {
-    const products = await Product.find().where('category').equals({ _id });
+  async indexProducts({
+    _id,
+    product,
+  }: CategoriesRepositoryListProductsByCategory) {
+    const products = await Product.find({ product })
+      .where('category')
+      .equals({ _id });
 
     return products;
   }
 
   async findByName({ name }: CategoriesRepositoryFindByName) {
-    const nameFind = await Category.findById({ name });
-
-    console.log(`aaaa ${{ nameFind }}`);
-    return nameFind;
+    return await Category.findOne({ name }).where('category').equals({ name });
   }
 }

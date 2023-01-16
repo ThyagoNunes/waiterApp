@@ -11,8 +11,7 @@ export class CreateCategoryUseCase {
 
   async create(data: CreateCategoryUseCaseNew) {
     try {
-      const { category } = data;
-      const newCategory = await this.categoriesRepository.create({ category });
+      const newCategory = await this.categoriesRepository.create(data);
 
       return newCategory;
     } catch (error) {
