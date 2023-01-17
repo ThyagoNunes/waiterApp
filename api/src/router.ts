@@ -10,7 +10,7 @@ import multer from 'multer';
 //import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
 // import { listProducts } from './app/useCases/products/listProducts';
 //import { createProduct } from './app/useCases/products/createProduct';
-import { updateProduct } from './app/useCases/products/updateProduct';
+// import { updateProduct } from './app/useCases/products/updateProduct';
 import { deleteProduct } from './app/useCases/products/deleteProduct';
 import { listOrders } from './app/useCases/orders/listOrders';
 import { listOrder } from './app/useCases/orders/listOrder';
@@ -34,7 +34,8 @@ import { ListProductsUseCase } from './use-case/products/list-products-use-case'
 import { ListProductUseCase } from './use-case/products/list-product-use-case';
 import { FindProductsByCategoryUseCase } from './use-case/categories/find-products-by-categories-use-case';
 import { CreateProductUseCase } from './use-case/products/create-product-use-case';
-import { FindProductNameUseCase } from './use-case/products/find-product-name-use-case';
+import { FindNameProductUseCase } from './use-case/products/find-name-product-use-case';
+import { UpdateProductUseCase } from './use-case/products/update-product-use-case';
 
 export const router = Router();
 
@@ -97,7 +98,7 @@ router.post('/categories', async (req, res) => {
     name,
   });
 
-  if (nameReturned) {
+  if (name === nameReturned) {
     return res.status(400).send(`Name ${name} is already exists`);
   }
 
@@ -109,7 +110,7 @@ router.post('/categories', async (req, res) => {
     category: { name, icon },
   });
 
-  return res.status(200).send({ newCategory });
+  return res.status(200).send(newCategory);
 });
 
 // Updated category
@@ -129,6 +130,7 @@ router.put('/categories/:_id', async (req, res) => {
   );
 
   const categoryExists = await listCategoryUseCase.show({ _id });
+  console.log(`categoryExists: ${categoryExists}`);
 
   if (!categoryExists) {
     return res.status(400).json({ error: 'Category not found' });
@@ -140,8 +142,12 @@ router.put('/categories/:_id', async (req, res) => {
 
   const nameCategoryExists = await findNameCategoryUseCase.findByName({ name });
 
-  if (nameCategoryExists && name !== nameCategoryExists) {
-    return res.status(400).json(`This ${name} from category is already in use`);
+  console.log(nameCategoryExists);
+
+  if (name !== categoryExists.name) {
+    return res
+      .status(400)
+      .json({ error: `This ${name} from category is already in use` });
   }
 
   const updateCategoryUseCase = new UpdateCategoryUseCase(
@@ -150,7 +156,7 @@ router.put('/categories/:_id', async (req, res) => {
 
   const updatedCategory = await updateCategoryUseCase.update({ _id, category });
 
-  return res.status(200).send({ updatedCategory });
+  return res.status(200).send(updatedCategory);
 });
 
 // Delete category
@@ -165,7 +171,7 @@ router.delete('/categories/:_id', async (req, res) => {
   const categoryExists = await listCategoriesUseCase.show({ _id });
 
   if (!categoryExists) {
-    return res.status(400).json(`This ${categoryExists} not exists`);
+    return res.status(400).json({ error: `This ${_id} not exists` });
   }
 
   const deleteCategoryUseCase = new DeleteCategoryUseCase(
@@ -233,15 +239,51 @@ router.get('/products/:_id', async (req, res) => {
 router.post('/products', upload.single('image'), async (req, res) => {
   const imagePath = req.file?.filename;
   const { name, description, price, ingredients, category } = req.body;
-
   if (!name || !description || !imagePath || !price || !category) {
     return res.status(400).json({
       error:
         'Inputs NAME, DESCRIPTION, IMAGEPATH, PRICE && CATEGORY ARE REQUIRED',
     });
   }
-
   console.log('validou inputs');
+
+  const mongoProductsRepository = new MongoProductsRepository();
+  const findNameProductUseCase = new FindNameProductUseCase(
+    mongoProductsRepository
+  );
+
+  const productReturned = await findNameProductUseCase.findByName({ name });
+  console.log(productReturned);
+
+  if (name === productReturned) {
+    return res
+      .status(400)
+      .json({ error: `This name ${name} is already exists` });
+  }
+
+  console.log('verificou a existência do produto ' + productReturned);
+  const createProductUseCase = new CreateProductUseCase(
+    mongoProductsRepository
+  );
+  const newProduct = await createProductUseCase.create({
+    product: { name, description, imagePath, price, ingredients, category },
+  });
+
+  res.status(200).send(newProduct);
+});
+
+// Update product
+router.put('/products/:_id', upload.single('image'), async (req, res) => {
+  const imagePath = req.file?.filename;
+  const { _id } = req.params;
+  const { name, description, price, ingredients, category } = req.body;
+
+  if (!name || !description || !imagePath || !price || !category) {
+    return res.status(400).json({
+      error: 'NAME, DESCRIPTION, IMAGEPATH, PRICE && CATEGORY are reequired',
+    });
+  }
+
   const product = {
     name,
     description,
@@ -252,33 +294,49 @@ router.post('/products', upload.single('image'), async (req, res) => {
   };
 
   const mongoProductsRepository = new MongoProductsRepository();
+  const listProductUseCase = new ListProductUseCase(mongoProductsRepository);
 
-  const findProductNameUseCase = new FindProductNameUseCase(
-    mongoProductsRepository
-  );
+  //produto existe ou não?
+  const productExists = await listProductUseCase.show({ _id });
 
-  const existsName = await findProductNameUseCase.findByName({ name });
-
-  if (existsName) {
-    return res
-      .status(400)
-      .json({ error: `This name ${name} is already exists` });
+  if (!productExists) {
+    return res.status(400).json({ error: `This product ${_id} not found ` });
   }
 
-  console.log('verificou a existência do produto');
-  const createProductUseCase = new CreateProductUseCase(
+  console.log(productExists);
+
+  const findNameProductUseCase = new FindNameProductUseCase(
     mongoProductsRepository
   );
-  const newProduct = await createProductUseCase.create({ product });
 
-  res.status(200).send(newProduct);
+  const findName = await findNameProductUseCase.findByName({ name });
+  console.log(`findName: ${findName}`);
+
+  const updateProductUseCase = new UpdateProductUseCase(
+    mongoProductsRepository
+  );
+
+  if (name !== findName && name === findName) {
+    return res.status(400).json({ error: 'this name is already in use' });
+  }
+
+  //   if (findName.name)
+  const updateProduct = await updateProductUseCase.update({ _id, product });
+
+  res.status(200).send(updateProduct);
+  //   const productsExistsName = productExists.name;
+  /*   const findNameProductUseCase = new FindNameProductUseCase(
+    mongoProductsRepository
+  );
+
+  const nameProductExists = await findNameProductUseCase.findByName({ name });
+  console.log(nameProductExists.name);
+  if (nameProductExists.name && name !== nameProductExists.name) {
+    return res
+      .status(400)
+      .json({ error: `This ${name} from product is already in use` });
+  } */
 });
-
-// Create product
-//router.post('/products', upload.single('image'), createProduct);
-
-// Update product
-router.put('/products/:productId', upload.single('image'), updateProduct);
 
 // Change category product
 router.patch('/products/:productId', changeProductCategory);

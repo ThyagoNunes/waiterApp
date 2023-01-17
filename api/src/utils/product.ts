@@ -1,12 +1,12 @@
 export interface IProduct {
   _id?: string;
   name: string;
-  description: string;
-  imagePath: string;
-  price: number;
+  description: string | any;
+  imagePath: string | any;
+  price: number | any;
   ingredients?: {
-    name: string;
-    icon: string;
+    name: string | any;
+    icon: string | any;
   }[];
-  category: string;
+  category: string | any;
 }

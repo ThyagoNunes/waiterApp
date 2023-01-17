@@ -23,47 +23,21 @@ export class MongoProductsRepository implements ProductsRepository {
   }
 
   async findByName({ name }: ProductsRepositoryFindName) {
-    const productByName = await Product.findOne({ name })
-      .where('name')
-      .equals({ name });
+    const product = await Product.findOne({ name }).where('name').equals(name);
 
-    return productByName;
+    return product;
   }
-  async create({
-    name,
-    description,
-    imagePath,
-    price,
-    category,
-    ingredients,
-  }: ProductsRepositoryCreateData) {
-    const newProduct = await Product.create({
-      name: name,
-      description: description,
-      imagePath: imagePath,
-      price: Number(price),
-      category: category,
-      ingredients: ingredients ? ingredients : [],
-    });
+  async create({ product }: ProductsRepositoryCreateData) {
+    const newProduct = await Product.create(product);
 
     console.log(`mongo-products-repository ${newProduct}`);
 
     return newProduct;
   }
   async update({ _id, product }: ProductsRepositoryUpdateData) {
-    const categories = await Product.findByIdAndUpdate(
-      { _id },
-      {
-        name: product.name,
-        description: product.description,
-        imagePath: product.imagePath,
-        price: product.price,
-        ingredients: product.ingredients,
-        category: product.category,
-      }
-    );
-
-    return categories;
+    const products = await Product.findByIdAndUpdate(_id, product);
+    console.log(`mongo-update ${products}`);
+    return products;
   }
   async delete({ _id }: ProductsRepositoryDeleteData) {
     await Product.findByIdAndDelete({ _id });

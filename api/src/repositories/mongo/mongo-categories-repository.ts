@@ -32,13 +32,7 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     return categories;
   }
   async update({ _id, category }: CategoriesRepositoryUpdateData) {
-    const categories = await Category.findByIdAndUpdate(
-      { _id },
-      {
-        name: category.name,
-        icon: category.icon,
-      }
-    );
+    const categories = await Category.findByIdAndUpdate({ _id }, category);
 
     return categories;
   }

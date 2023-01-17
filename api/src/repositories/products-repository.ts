@@ -6,16 +6,7 @@ export interface ProductsRepositoryShowData {
 }
 
 export interface ProductsRepositoryCreateData {
-  _id?: string;
-  name: string;
-  description: string;
-  imagePath: string;
-  price: number;
-  ingredients?: {
-    name: string;
-    icon: string;
-  }[];
-  category?: string;
+  product: IProduct;
 }
 
 export interface ProductsRepositoryUpdateData {
@@ -41,7 +32,7 @@ type Product = typeof Product;
 export interface ProductsRepository {
   index: () => Promise<Product[] | any>;
   show: (data: ProductsRepositoryShowData) => Promise<Product | any>;
-  create: (data: ProductsRepositoryCreateData) => Promise<Product | any>;
+  create: (product: ProductsRepositoryCreateData) => Promise<Product | any>;
   update: (data: ProductsRepositoryUpdateData) => Promise<Product | any>;
   delete: (data: ProductsRepositoryDeleteData) => Promise<Product | any>;
   findByName: (data: ProductsRepositoryFindName) => Promise<Product | any>;

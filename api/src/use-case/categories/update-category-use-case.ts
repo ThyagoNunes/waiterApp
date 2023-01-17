@@ -13,10 +13,7 @@ export class UpdateCategoryUseCase {
   async update({ _id, category }: UpdateCategoryUseCaseId) {
     const updateCategory = await this.categoriesRepository.update({
       _id,
-      category: {
-        name: category.name,
-        icon: category.icon,
-      },
+      category,
     });
 
     return updateCategory;
