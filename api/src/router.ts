@@ -136,23 +136,24 @@ router.put('/categories/:_id', async (req, res) => {
     return res.status(400).json({ error: 'Category not found' });
   }
 
+  console.log(categoryExists.name);
+
   const findNameCategoryUseCase = new FindNameCategoryUseCase(
     mongoCategoriesRepository
   );
 
   const nameCategoryExists = await findNameCategoryUseCase.findByName({ name });
 
-  console.log(nameCategoryExists);
+  console.log('this is: ' + nameCategoryExists);
+  // category = dono
+  // name =  pizza
 
-  if (name !== categoryExists.name) {
+  // sim e sim
+  if (name !== categoryExists.name && name === nameCategoryExists) {
     return res
       .status(400)
       .json({ error: `This ${name} from category is already in use` });
   }
-
-  const updateCategoryUseCase = new UpdateCategoryUseCase(
-    mongoCategoriesRepository
-  );
 
   const updatedCategory = await updateCategoryUseCase.update({ _id, category });
 
