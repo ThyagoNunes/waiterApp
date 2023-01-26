@@ -31,10 +31,16 @@ export class MongoCategoriesRepository implements CategoriesRepository {
 
     return categories;
   }
-  async update({ _id, category }: CategoriesRepositoryUpdateData) {
-    const categories = await Category.findByIdAndUpdate({ _id }, category);
+  async update(data: CategoriesRepositoryUpdateData) {
+    const categories = await Category.findByIdAndUpdate({
+      _id: data._id,
+      name: data.category!.name,
+      icon: data.category!.icon,
+    });
 
-    return categories;
+    console.log(categories);
+
+    return categories!;
   }
   async delete({ _id }: CategoriesRepositoryDeleteData) {
     await Category.findByIdAndDelete({ _id });
@@ -53,7 +59,21 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     return products;
   }
 
-  async findByName({ name }: CategoriesRepositoryFindByName) {
-    return await Category.findOne({ name }).where('category').equals({ name });
+  async findByName(data: CategoriesRepositoryFindByName) {
+    console.log(`mongo-categories: ${data}`);
+    const nameFind = await Category.find(data.name).where('name').equals(data);
+
+    console.log(`nameFind: ${nameFind}`);
+    if (nameFind === null) {
+      return false;
+    }
+    return true;
+  }
+
+  async findAllNames() {
+    const allNames = await Category.find({ name }).where('name').equals(name);
+
+    console.log(`mongo: ${allNames}`);
+    return allNames;
   }
 }

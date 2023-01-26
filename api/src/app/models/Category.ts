@@ -4,7 +4,7 @@ export const Category = model(
   'Category',
   new Schema({
     name: {
-      type: String,
+      type: Object,
       required: true,
     },
     icon: {

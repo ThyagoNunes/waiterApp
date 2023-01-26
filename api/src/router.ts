@@ -84,10 +84,9 @@ router.get('/categories/:_id', async (req, res) => {
 router.post('/categories', async (req, res) => {
   const { name, icon } = req.body;
 
-  if (!name || !icon) {
+  if (!name && !icon) {
     return res.status(400).json({ error: 'NAME & ICON is required' });
   }
-
   const mongoCategoriesRepository = new MongoCategoriesRepository();
 
   const findNameCategoryUseCase = new FindNameCategoryUseCase(
@@ -98,6 +97,8 @@ router.post('/categories', async (req, res) => {
     name,
   });
 
+  console.log(`nameReturned: ${nameReturned}`);
+  console.log(`name: ${name}`);
   if (name === nameReturned) {
     return res.status(400).send(`Name ${name} is already exists`);
   }
@@ -130,32 +131,51 @@ router.put('/categories/:_id', async (req, res) => {
   );
 
   const categoryExists = await listCategoryUseCase.show({ _id });
-  console.log(`categoryExists: ${categoryExists}`);
 
   if (!categoryExists) {
     return res.status(400).json({ error: 'Category not found' });
   }
 
-  console.log(categoryExists.name);
-
+  // achou categoria
   const findNameCategoryUseCase = new FindNameCategoryUseCase(
     mongoCategoriesRepository
   );
 
+  console.log(`Antes de ir pro findByName ${name}`);
+
   const nameCategoryExists = await findNameCategoryUseCase.findByName({ name });
 
-  console.log('this is: ' + nameCategoryExists);
-  // category = dono
-  // name =  pizza
+  console.log(nameCategoryExists);
 
-  // sim e sim
-  if (name !== categoryExists.name && name === nameCategoryExists) {
+  console.log(`name: ${name}`);
+  console.log(`nameCategoryExists: ${nameCategoryExists}`);
+
+  console.log(
+    `nameCategoryExists: ${nameCategoryExists === false ? true : false}`
+  );
+  console.log(`categoryExists.name: ${categoryExists.name}`);
+  // A === A ? e A !== A                    TRUE
+  if (nameCategoryExists === true && name !== categoryExists.name) {
+    return res.status(400).json({ error: 'This category is already exists' });
+  }
+  console.log('chegou');
+
+  /*   if (name !== categoryExists.name && nameCategoryExists) {
     return res
       .status(400)
       .json({ error: `This ${name} from category is already in use` });
-  }
+  } */
+  const updateCategoryUseCase = new UpdateCategoryUseCase(
+    mongoCategoriesRepository
+  );
 
-  const updatedCategory = await updateCategoryUseCase.update({ _id, category });
+  const updatedCategory = await updateCategoryUseCase.update({
+    _id,
+    category,
+  });
+
+  /*  if (nameCategoryExists && name !== categoryExists.name) {
+  } */
 
   return res.status(200).send(updatedCategory);
 });
@@ -165,14 +185,15 @@ router.delete('/categories/:_id', async (req, res) => {
   const { _id } = req.params;
 
   const mongoCategoriesRepository = new MongoCategoriesRepository();
-  const listCategoriesUseCase = new ListCategoryUseCase(
+
+  const listCategoryUseCase = new ListCategoryUseCase(
     mongoCategoriesRepository
   );
 
-  const categoryExists = await listCategoriesUseCase.show({ _id });
+  const categoryExists = await listCategoryUseCase.show({ _id });
 
   if (!categoryExists) {
-    return res.status(400).json({ error: `This ${_id} not exists` });
+    return res.status(400).json({ error: 'This category not exists' });
   }
 
   const deleteCategoryUseCase = new DeleteCategoryUseCase(
@@ -180,8 +201,7 @@ router.delete('/categories/:_id', async (req, res) => {
   );
 
   await deleteCategoryUseCase.delete({ _id });
-
-  res.status(204).send('Deleted');
+  res.status(204).json({ DELETED: 'ok' });
 });
 
 // List products by category

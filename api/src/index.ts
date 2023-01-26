@@ -21,7 +21,7 @@ mongoose
   .connect(url)
 
   .then(() => {
-    const port = process.env.PORT || 8000;
+    const port = 8000 || process.env.PORT;
 
     app.use((req, res, next) => {
       res.setHeader('Access-Control-Allow-Origin', '*');
