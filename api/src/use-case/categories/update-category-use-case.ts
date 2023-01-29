@@ -11,11 +11,18 @@ export class UpdateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 
   async update({ _id, category }: UpdateCategoryUseCaseId) {
-    const updateCategory = await this.categoriesRepository.update({
+    const name = category.name;
+    const icon = category.icon;
+    return await this.categoriesRepository.update({
       _id,
-      category,
+      category: {
+        name: name,
+        icon: icon,
+      },
     });
 
-    return updateCategory;
+    // console.log(`updateCategory: ${updateCategory}`);
+
+    // return updateCategory;
   }
 }

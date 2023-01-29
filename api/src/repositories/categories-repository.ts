@@ -28,7 +28,8 @@ export interface CategoriesRepositoryListProductsByCategory {
 
 export interface CategoriesRepositoryFindByName {
   _id?: string;
-  name: string | boolean | any;
+  name: string;
+  icon: string;
 }
 type Category = typeof Category;
 type Product = typeof Product;
@@ -44,6 +45,6 @@ export interface CategoriesRepository {
   ) => Promise<Product[] | any>;
   findByName: (
     data: CategoriesRepositoryFindByName
-  ) => Promise<Category | boolean | any>;
+  ) => Promise<Category | string | any>;
   findAllNames: () => Promise<Category[] | boolean | any>;
 }

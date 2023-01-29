@@ -32,13 +32,14 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     return categories;
   }
   async update(data: CategoriesRepositoryUpdateData) {
-    const categories = await Category.findByIdAndUpdate({
-      _id: data._id,
-      name: data.category!.name,
-      icon: data.category!.icon,
-    });
+    const { _id, category } = data;
+    const name = category.name;
+    const icon = category.icon;
 
-    console.log(categories);
+    const categories = await Category.findByIdAndUpdate(_id, {
+      name,
+      icon,
+    });
 
     return categories!;
   }
@@ -60,20 +61,16 @@ export class MongoCategoriesRepository implements CategoriesRepository {
   }
 
   async findByName(data: CategoriesRepositoryFindByName) {
-    console.log(`mongo-categories: ${data}`);
-    const nameFind = await Category.find(data.name).where('name').equals(data);
+    const nameFind = await Category.findOne({ data })
+      .where('name')
+      .equals(data);
 
-    console.log(`nameFind: ${nameFind}`);
-    if (nameFind === null) {
-      return false;
-    }
-    return true;
+    return nameFind?.name;
   }
 
   async findAllNames() {
     const allNames = await Category.find({ name }).where('name').equals(name);
 
-    console.log(`mongo: ${allNames}`);
     return allNames;
   }
 }

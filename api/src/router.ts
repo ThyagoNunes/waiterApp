@@ -95,11 +95,13 @@ router.post('/categories', async (req, res) => {
 
   const nameReturned = await findNameCategoryUseCase.findByName({
     name,
+    icon,
   });
 
   console.log(`nameReturned: ${nameReturned}`);
   console.log(`name: ${name}`);
-  if (name === nameReturned) {
+
+  if (nameReturned) {
     return res.status(400).send(`Name ${name} is already exists`);
   }
 
@@ -135,47 +137,32 @@ router.put('/categories/:_id', async (req, res) => {
   if (!categoryExists) {
     return res.status(400).json({ error: 'Category not found' });
   }
-
-  // achou categoria
   const findNameCategoryUseCase = new FindNameCategoryUseCase(
     mongoCategoriesRepository
   );
 
-  console.log(`Antes de ir pro findByName ${name}`);
+  const nameCategoryExists = await findNameCategoryUseCase.findByName({
+    name,
+    icon,
+  });
 
-  const nameCategoryExists = await findNameCategoryUseCase.findByName({ name });
-
-  console.log(nameCategoryExists);
-
-  console.log(`name: ${name}`);
-  console.log(`nameCategoryExists: ${nameCategoryExists}`);
-
-  console.log(
-    `nameCategoryExists: ${nameCategoryExists === false ? true : false}`
-  );
-  console.log(`categoryExists.name: ${categoryExists.name}`);
-  // A === A ? e A !== A                    TRUE
-  if (nameCategoryExists === true && name !== categoryExists.name) {
-    return res.status(400).json({ error: 'This category is already exists' });
-  }
-  console.log('chegou');
-
-  /*   if (name !== categoryExists.name && nameCategoryExists) {
-    return res
-      .status(400)
-      .json({ error: `This ${name} from category is already in use` });
-  } */
   const updateCategoryUseCase = new UpdateCategoryUseCase(
     mongoCategoriesRepository
   );
+  const updatedCategory = await updateCategoryUseCase.update({ _id, category });
 
-  const updatedCategory = await updateCategoryUseCase.update({
-    _id,
-    category,
-  });
+  if (name !== categoryExists.name && nameCategoryExists) {
+    return res.status(400).json({ error: 'This category is already exists' });
+  }
 
-  /*  if (nameCategoryExists && name !== categoryExists.name) {
-  } */
+  if (!nameCategoryExists) {
+    const nameAtt = {
+      _id,
+      name,
+      icon,
+    };
+    return res.status(200).send(nameAtt);
+  }
 
   return res.status(200).send(updatedCategory);
 });
@@ -388,3 +375,11 @@ router.delete('/orders/:orderId', cancelOrder);
 
 // import { listProducts } from './app/useCases/products/listProducts';
 // import { listProduct } from './app/useCases/products/listProduct';
+
+// A === A ? e A !== A                    TRUE
+// dono !== dona ? true &
+/*   if (name !== categoryExists.name && nameCategoryExists) {
+    return res
+      .status(400)
+      .json({ error: `This ${name} from category is already in use` });
+} */

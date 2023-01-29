@@ -1,7 +1,8 @@
 import { CategoriesRepository } from '../../repositories/categories-repository';
 
 export interface FindNameCategoryUseCaseName {
-  name: string | boolean | any;
+  name: string | any;
+  icon: string | any;
 }
 
 export class FindNameCategoryUseCase {
@@ -9,9 +10,7 @@ export class FindNameCategoryUseCase {
 
   async findByName(data: FindNameCategoryUseCaseName) {
     try {
-      await this.categoriesRepository.findByName(data.name);
-
-      return data.name;
+      return await this.categoriesRepository.findByName(data.name);
     } catch (error) {
       console.log(error);
     }
