@@ -22,11 +22,6 @@ export class MongoProductsRepository implements ProductsRepository {
     return products;
   }
 
-  async findByName({ name }: ProductsRepositoryFindName) {
-    const product = await Product.findOne({ name }).where('name').equals(name);
-
-    return product;
-  }
   async create({ product }: ProductsRepositoryCreateData) {
     const newProduct = await Product.create(product);
 
@@ -34,15 +29,34 @@ export class MongoProductsRepository implements ProductsRepository {
 
     return newProduct;
   }
-  async update({ _id, product }: ProductsRepositoryUpdateData) {
-    const products = await Product.findByIdAndUpdate(_id, product);
-    console.log(`mongo-update ${products}`);
-    return products;
+
+  async update(data: ProductsRepositoryUpdateData) {
+    const { _id, product } = data;
+    const { name, description, imagePath, price, category, ingredients } =
+      product;
+
+    const categories = await Product.findByIdAndUpdate(_id, {
+      name,
+      description,
+      imagePath,
+      price: Number(price),
+      category,
+      ingredients: ingredients ? JSON.parse(ingredients) : [],
+    });
+
+    return categories!;
   }
+
   async delete({ _id }: ProductsRepositoryDeleteData) {
     await Product.findByIdAndDelete({ _id });
 
     return 'Deleted';
+  }
+
+  async findByName(data: ProductsRepositoryFindName) {
+    const product = await Product.findOne({ data }).where('name').equals(data);
+
+    return product?.name;
   }
 
   async updateCategory({

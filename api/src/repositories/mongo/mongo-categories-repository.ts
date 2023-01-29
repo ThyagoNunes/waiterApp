@@ -67,10 +67,4 @@ export class MongoCategoriesRepository implements CategoriesRepository {
 
     return nameFind?.name;
   }
-
-  async findAllNames() {
-    const allNames = await Category.find({ name }).where('name').equals(name);
-
-    return allNames;
-  }
 }

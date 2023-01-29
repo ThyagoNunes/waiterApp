@@ -4,9 +4,11 @@ export interface IProduct {
   description: string | any;
   imagePath: string | any;
   price: number | any;
-  ingredients?: {
-    name: string | any;
-    icon: string | any;
-  }[];
+  ingredients?:
+    | {
+        name: string | any;
+        icon: string | any;
+      }[]
+    | any;
   category: string | any;
 }

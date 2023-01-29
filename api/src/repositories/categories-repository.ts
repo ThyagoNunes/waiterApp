@@ -46,5 +46,4 @@ export interface CategoriesRepository {
   findByName: (
     data: CategoriesRepositoryFindByName
   ) => Promise<Category | string | any>;
-  findAllNames: () => Promise<Category[] | boolean | any>;
 }

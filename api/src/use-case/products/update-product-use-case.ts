@@ -11,9 +11,7 @@ export class UpdateProductUseCase {
 
   async update({ _id, product }: UpdateProductUseCaseUpdate) {
     try {
-      const update = await this.productsRepository.update({ _id, product });
-
-      return update;
+      return await this.productsRepository.update({ _id, product });
     } catch (error) {
       console.log(error);
     }

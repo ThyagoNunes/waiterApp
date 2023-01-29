@@ -308,42 +308,39 @@ router.put('/products/:_id', upload.single('image'), async (req, res) => {
   const productExists = await listProductUseCase.show({ _id });
 
   if (!productExists) {
-    return res.status(400).json({ error: `This product ${_id} not found ` });
+    return res.status(400).json({ error: 'Product not found ' });
   }
-
-  console.log(productExists);
 
   const findNameProductUseCase = new FindNameProductUseCase(
     mongoProductsRepository
   );
 
-  const findName = await findNameProductUseCase.findByName({ name });
-  console.log(`findName: ${findName}`);
+  const nameProductExists = await findNameProductUseCase.findByName({ name });
 
   const updateProductUseCase = new UpdateProductUseCase(
     mongoProductsRepository
   );
 
-  if (name !== findName && name === findName) {
-    return res.status(400).json({ error: 'this name is already in use' });
+  const updatedProduct = await updateProductUseCase.update({ _id, product });
+
+  if (name !== productExists.name && nameProductExists) {
+    return res.status(400).json({ error: 'This product is already exists' });
   }
 
-  //   if (findName.name)
-  const updateProduct = await updateProductUseCase.update({ _id, product });
+  if (!nameProductExists) {
+    const nameAtt = {
+      _id,
+      name,
+      description,
+      imagePath,
+      price,
+      ingredients,
+      category,
+    };
+    return res.status(200).send(nameAtt);
+  }
 
-  res.status(200).send(updateProduct);
-  //   const productsExistsName = productExists.name;
-  /*   const findNameProductUseCase = new FindNameProductUseCase(
-    mongoProductsRepository
-  );
-
-  const nameProductExists = await findNameProductUseCase.findByName({ name });
-  console.log(nameProductExists.name);
-  if (nameProductExists.name && name !== nameProductExists.name) {
-    return res
-      .status(400)
-      .json({ error: `This ${name} from product is already in use` });
-  } */
+  res.status(200).send(updatedProduct);
 });
 
 // Change category product

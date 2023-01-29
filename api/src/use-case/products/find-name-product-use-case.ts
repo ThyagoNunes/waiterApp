@@ -1,21 +1,15 @@
 import { ProductsRepository } from '../../repositories/products-repository';
 
 export interface FindNameProductUseCaseData {
-  name: string;
+  name: string | any;
 }
 
 export class FindNameProductUseCase {
   constructor(private productsRepository: ProductsRepository) {}
 
-  async findByName({ name }: FindNameProductUseCaseData) {
+  async findByName(data: FindNameProductUseCaseData) {
     try {
-      const findProductName = await this.productsRepository.findByName({
-        name,
-      });
-
-      console.log(`find-name-product-use-case ${findProductName}`);
-
-      return findProductName;
+      return await this.productsRepository.findByName(data.name);
     } catch (error) {
       console.log(error);
     }
