@@ -345,7 +345,7 @@ router.put('/products/:_id', upload.single('image'), async (req, res) => {
   res.status(200).send(updatedProduct);
 });
 
-// Change category product
+
 
 // Change imagepath product
 router.patch('/uploads/:productId', changeProductImagePath);
@@ -392,7 +392,9 @@ router.delete('/orders/:orderId', cancelOrder);
 // import { listProducts } from './app/useCases/products/listProducts';
 // import { listProduct } from './app/useCases/products/listProduct';
 
-/* router.patch('/products/:_id', async (req, res) => {
+/* Change category product
+
+router.patch('/products/:_id', async (req, res) => {
     const { _id } = req.params;
     const { _idCategory } = req.body;
 

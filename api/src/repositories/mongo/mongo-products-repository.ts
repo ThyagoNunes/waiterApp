@@ -6,7 +6,7 @@ import {
   ProductsRepositoryCreateData,
   ProductsRepositoryUpdateData,
   ProductsRepositoryDeleteData,
-  ProductsRepositoryChangeCategoryData,
+  /* ProductsRepositoryChangeCategoryData, */
 } from '../products-repository';
 
 export class MongoProductsRepository implements ProductsRepository {
@@ -59,7 +59,7 @@ export class MongoProductsRepository implements ProductsRepository {
     return product?.name;
   }
 
-  async updateCategory({
+  /*   async updateCategory({
     _id,
     _idCategory,
   }: ProductsRepositoryChangeCategoryData) {
@@ -71,5 +71,5 @@ export class MongoProductsRepository implements ProductsRepository {
     );
 
     return changeIdCategory;
-  }
+  } */
 }
