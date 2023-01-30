@@ -10,14 +10,14 @@ export async function changeProductCategory(req: Request, res: Response) {
 
     const existsProduct = await Product.findById(productId);
 
-    if(!existsProduct) {
-      return res.status(404).json({error: 'Product not found'});
+    if (!existsProduct) {
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     const existsCategory = await Category.findById(category);
 
-    if(!existsCategory){
-      return res.status(404).json({error: 'Category not found'});
+    if (!existsCategory) {
+      return res.status(404).json({ error: 'Category not found' });
     }
 
     await Product.findByIdAndUpdate(productId, { category });

@@ -1,7 +1,7 @@
 import { CategoriesRepository } from '../../repositories/categories-repository';
 
 export interface ListCategoryUseCaseId {
-  _id: string;
+  _id: string | any;
 }
 
 export class ListCategoryUseCase {

@@ -22,6 +22,7 @@ export class MongoCategoriesRepository implements CategoriesRepository {
 
     return categories;
   }
+
   async create({ category }: CategoriesRepositoryCreateData) {
     const categories = await Category.create({
       name: category.name,

@@ -11,24 +11,24 @@ import multer from 'multer';
 // import { listProducts } from './app/useCases/products/listProducts';
 //import { createProduct } from './app/useCases/products/createProduct';
 // import { updateProduct } from './app/useCases/products/updateProduct';
-import { deleteProduct } from './app/useCases/products/deleteProduct';
+// import { deleteProduct } from './app/useCases/products/deleteProduct';
 import { listOrders } from './app/useCases/orders/listOrders';
 import { listOrder } from './app/useCases/orders/listOrder';
 import { createOrder } from './app/useCases/orders/createOrder';
 import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
 import { cancelOrder } from './app/useCases/orders/cancelOrder';
-import { changeProductCategory } from './app/useCases/products/changeProductCategory';
+// import { changeProductCategory } from './app/useCases/products/changeProductCategory';
 import { changeProductImagePath } from './app/useCases/products/changeProductImagePath';
 
 import { MongoCategoriesRepository } from './repositories/mongo/mongo-categories-repository';
 import { MongoProductsRepository } from './repositories/mongo/mongo-products-repository';
 
 import { ListCategoriesUseCase } from './use-case/categories/list-categories-use-case';
-import { ListCategoryUseCase } from './use-case/categories/list-category-use-case';
 import { CreateCategoryUseCase } from './use-case/categories/create-category-use-case';
 import { FindNameCategoryUseCase } from './use-case/categories/find-name-category-use-case';
 import { UpdateCategoryUseCase } from './use-case/categories/update-category-use-case';
 import { DeleteCategoryUseCase } from './use-case/categories/delete-category-use-case';
+import { ListCategoryUseCase } from './use-case/categories/list-category-use-case';
 
 import { ListProductsUseCase } from './use-case/products/list-products-use-case';
 import { ListProductUseCase } from './use-case/products/list-product-use-case';
@@ -36,6 +36,8 @@ import { FindProductsByCategoryUseCase } from './use-case/categories/find-produc
 import { CreateProductUseCase } from './use-case/products/create-product-use-case';
 import { FindNameProductUseCase } from './use-case/products/find-name-product-use-case';
 import { UpdateProductUseCase } from './use-case/products/update-product-use-case';
+import { DeleteProductUseCase } from './use-case/products/delete-product-use-case';
+// import { UpdateProductCategoryUseCase } from './use-case/products/update-product-category-use-case';
 
 export const router = Router();
 
@@ -344,13 +346,30 @@ router.put('/products/:_id', upload.single('image'), async (req, res) => {
 });
 
 // Change category product
-router.patch('/products/:productId', changeProductCategory);
 
 // Change imagepath product
 router.patch('/uploads/:productId', changeProductImagePath);
 
 // Delete product
-router.delete('/products/:productId', deleteProduct);
+router.delete('/products/:_id', async (req, res) => {
+  const { _id } = req.params;
+  const mongoProductsRepository = new MongoProductsRepository();
+
+  const listProductUseCase = new ListProductUseCase(mongoProductsRepository);
+
+  const existProduct = await listProductUseCase.show({ _id });
+
+  if (!existProduct) {
+    return res.status(400).json({ error: 'This Product not exists' });
+  }
+
+  const deleteProductUseCase = new DeleteProductUseCase(
+    mongoProductsRepository
+  );
+
+  await deleteProductUseCase.delete({ _id });
+  return res.status(204).json({ DELETED: 'Ok ' });
+});
 
 // Get products by category
 //router.get('/categories/:categoryId/products', listProductsByCategory);
@@ -373,10 +392,36 @@ router.delete('/orders/:orderId', cancelOrder);
 // import { listProducts } from './app/useCases/products/listProducts';
 // import { listProduct } from './app/useCases/products/listProduct';
 
-// A === A ? e A !== A                    TRUE
-// dono !== dona ? true &
-/*   if (name !== categoryExists.name && nameCategoryExists) {
-    return res
-      .status(400)
-      .json({ error: `This ${name} from category is already in use` });
-} */
+/* router.patch('/products/:_id', async (req, res) => {
+    const { _id } = req.params;
+    const { _idCategory } = req.body;
+
+    const mongoProductsRepository = new MongoProductsRepository();
+    const listProductUseCase = new ListProductUseCase(mongoProductsRepository);
+
+    const existProduct = await listProductUseCase.show({ _id });
+    if (!existProduct) {
+      return res.status(400).json({ error: 'This Product not exists' });
+    }
+
+    const mongoCategoriesRepository = new MongoCategoriesRepository();
+    const findCategoryUseCase = new FindCategoryUseCase(
+      mongoCategoriesRepository
+    );
+
+    const categoryExists = await findCategoryUseCase.find({ _idCategory });
+
+    if (!categoryExists) {
+      return res.status(400).json({ error: 'Category not found' });
+    }
+
+    const updateProductCategoryUseCase = new UpdateProductCategoryUseCase(
+      mongoProductsRepository
+    );
+    const updateCategoryName = await updateProductCategoryUseCase.updateCategory({
+      _id,
+      _idCategory,
+    });
+
+    return res.status(200).send(updateCategoryName);
+  }); */
