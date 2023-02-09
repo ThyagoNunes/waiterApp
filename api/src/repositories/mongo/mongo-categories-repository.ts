@@ -2,12 +2,14 @@ import { Category } from '../../app/models/Category';
 import { Product } from '../../app/models/Product';
 import {
   CategoriesRepository,
+  CategoriesRepositoryFindById,
   CategoriesRepositoryShowData,
   CategoriesRepositoryCreateData,
   CategoriesRepositoryUpdateData,
   CategoriesRepositoryDeleteData,
-  CategoriesRepositoryListProductsByCategory,
   CategoriesRepositoryFindByName,
+  CategoriesRepositoryUpdateCategoryId,
+  CategoriesRepositoryListProductsByCategory,
 } from '../categories-repository';
 
 export class MongoCategoriesRepository implements CategoriesRepository {
@@ -67,5 +69,23 @@ export class MongoCategoriesRepository implements CategoriesRepository {
       .equals(data);
 
     return nameFind?.name;
+  }
+
+  async findById(data: CategoriesRepositoryFindById) {
+    console.log(`data: ${data}`);
+    const nameFind = await Category.findOne({ data }).where('_id').equals(data);
+
+    console.log(nameFind);
+    return nameFind?._idCategory;
+  }
+
+  async updateCategory(data: CategoriesRepositoryUpdateCategoryId) {
+    const { _id, _idCategory } = data;
+
+    const categoryUpdated = await Category.findByIdAndUpdate(_id, {
+      _idCategory: _idCategory,
+    });
+
+    return categoryUpdated!;
   }
 }

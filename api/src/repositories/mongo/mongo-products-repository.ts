@@ -6,7 +6,7 @@ import {
   ProductsRepositoryCreateData,
   ProductsRepositoryUpdateData,
   ProductsRepositoryDeleteData,
-  /* ProductsRepositoryChangeCategoryData, */
+  ProductsRepositoryChangeCategoryData,
 } from '../products-repository';
 
 export class MongoProductsRepository implements ProductsRepository {
@@ -24,9 +24,6 @@ export class MongoProductsRepository implements ProductsRepository {
 
   async create({ product }: ProductsRepositoryCreateData) {
     const newProduct = await Product.create(product);
-
-    console.log(`mongo-products-repository ${newProduct}`);
-
     return newProduct;
   }
 
@@ -59,7 +56,7 @@ export class MongoProductsRepository implements ProductsRepository {
     return product?.name;
   }
 
-  /*   async updateCategory({
+  async updateCategory({
     _id,
     _idCategory,
   }: ProductsRepositoryChangeCategoryData) {
@@ -71,5 +68,5 @@ export class MongoProductsRepository implements ProductsRepository {
     );
 
     return changeIdCategory;
-  } */
+  }
 }

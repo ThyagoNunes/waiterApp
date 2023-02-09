@@ -1,8 +1,8 @@
 export interface IOrder {
-  table: string;
+  table: number;
   status: ['WAITING', 'IN_PRODUCTION', 'DONE'];
   products: {
-    product: string;
+    product: string | any;
     quantity: number;
   }[];
 }

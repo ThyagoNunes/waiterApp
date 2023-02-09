@@ -31,6 +31,16 @@ export interface CategoriesRepositoryFindByName {
   name: string;
   icon: string;
 }
+
+export interface CategoriesRepositoryFindById {
+  _idCategory: string | any;
+}
+
+export interface CategoriesRepositoryUpdateCategoryId {
+  _id: string | any;
+  _idCategory: string | any;
+}
+
 type Category = typeof Category;
 type Product = typeof Product;
 
@@ -46,4 +56,10 @@ export interface CategoriesRepository {
   findByName: (
     data: CategoriesRepositoryFindByName
   ) => Promise<Category | string | any>;
+  findById: (
+    data: CategoriesRepositoryFindById
+  ) => Promise<Category | string | any>;
+  updateCategory: (
+    data: CategoriesRepositoryUpdateCategoryId
+  ) => Promise<Category | any>;
 }

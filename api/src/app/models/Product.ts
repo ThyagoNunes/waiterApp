@@ -23,7 +23,7 @@ export const Product = model(
       required: false,
       type: [
         {
-          name: {
+          ingredient: {
             type: String,
             required: true,
           },

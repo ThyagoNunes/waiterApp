@@ -1,4 +1,4 @@
-/* import { ProductsRepository } from '../../repositories/products-repository';
+import { ProductsRepository } from '../../repositories/products-repository';
 
 export interface UpdateProductCategoryUseCaseId {
   _id: string | any;
@@ -16,4 +16,3 @@ export class UpdateProductCategoryUseCase {
     }
   }
 }
- */

@@ -4,12 +4,16 @@ export const Category = model(
   'Category',
   new Schema({
     name: {
-      type: Object,
+      type: String,
       required: true,
     },
     icon: {
       type: String,
       required: true,
+    },
+    _idCategory: {
+      type: String,
+      required: false,
     },
   })
 );

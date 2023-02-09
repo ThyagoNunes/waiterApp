@@ -1,7 +1,7 @@
 import { ProductsRepository } from '../../repositories/products-repository';
 
 export interface ListProductsUseCaseId {
-  _id: string;
+  _id: string | any;
 }
 
 export class ListProductUseCase {
@@ -10,7 +10,7 @@ export class ListProductUseCase {
   async show({ _id }: ListProductsUseCaseId) {
     try {
       const product = await this.productsRepository.show({ _id });
-      return product;
+      return product!;
     } catch (error) {
       console.log(error);
     }

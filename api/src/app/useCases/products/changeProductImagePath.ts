@@ -7,17 +7,16 @@ export async function changeProductImagePath(req: Request, res: Response) {
     const { productId } = req.params;
     const { imagePath } = req.body;
 
-    console.log(imagePath);
     const existsProduct = await Product.findById(productId);
 
-    if(!existsProduct) {
-      return res.status(404).json({error: 'Product not found'});
+    if (!existsProduct) {
+      return res.status(404).json({ error: 'Product not found' });
     }
 
-    const existsImagePath= await Product.findById(imagePath);
+    const existsImagePath = await Product.findById(imagePath);
 
-    if(!existsImagePath){
-      return res.status(404).json({error: 'ImagePath not found'});
+    if (!existsImagePath) {
+      return res.status(404).json({ error: 'ImagePath not found' });
     }
 
     const converted = JSON.stringify(imagePath);

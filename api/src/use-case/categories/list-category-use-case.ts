@@ -1,7 +1,7 @@
 import { CategoriesRepository } from '../../repositories/categories-repository';
 
 export interface ListCategoryUseCaseId {
-  _id: string | any;
+  _id: string;
 }
 
 export class ListCategoryUseCase {
@@ -9,7 +9,9 @@ export class ListCategoryUseCase {
 
   async show({ _id }: ListCategoryUseCaseId) {
     try {
-      const category = await this.categoriesRepository.show({ _id });
+      const category = await this.categoriesRepository.show({
+        _id,
+      });
       return category;
     } catch (error) {
       console.log(error);

@@ -6,6 +6,7 @@ export interface ProductsRepositoryShowData {
 }
 
 export interface ProductsRepositoryCreateData {
+  _id?: string;
   product: IProduct;
 }
 
@@ -14,10 +15,10 @@ export interface ProductsRepositoryUpdateData {
   product: IProduct;
 }
 
-/* export interface ProductsRepositoryChangeCategoryData {
+export interface ProductsRepositoryChangeCategoryData {
   _id: string;
   _idCategory: string;
-} */
+}
 
 export interface ProductsRepositoryDeleteData {
   _id: string;
@@ -36,7 +37,7 @@ export interface ProductsRepository {
   update: (data: ProductsRepositoryUpdateData) => Promise<Product | any>;
   delete: (data: ProductsRepositoryDeleteData) => Promise<Product | any>;
   findByName: (data: ProductsRepositoryFindName) => Promise<Product | any>;
-  /* updateCategory: (
+  updateCategory: (
     data: ProductsRepositoryChangeCategoryData
-  ) => Promise<Product | any>; */
+  ) => Promise<Product | any>;
 }

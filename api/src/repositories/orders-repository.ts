@@ -2,28 +2,28 @@ import { Order } from '../app/models/Order';
 import { IOrder } from '../utils/order';
 
 export interface OrdersRepositoryShowData {
-  id: string;
+  _id: string;
 }
 
 export interface OrdersRepositoryCreateData {
-  Order: IOrder;
+  order: IOrder;
 }
 
 export interface OrdersRepositoryChangeStatusData {
-  id: string;
-  Order: IOrder;
+  _id: string;
+  order: IOrder;
 }
 
 export interface OrdersRepositoryDeleteData {
-  id: string;
+  _id: string;
 }
 
 type Order = typeof Order;
 
 export interface OrdersRepository {
-  index: () => Promise<Order[] | ''>;
-  show: (data: OrdersRepositoryShowData) => Promise<Order | string>;
-  create: (data: OrdersRepositoryCreateData) => Promise<Order>;
-  update: (data: OrdersRepositoryChangeStatusData) => Promise<Order | string>;
-  delete: (data: OrdersRepositoryDeleteData) => Promise<'' | string>;
+  index: () => Promise<Order[] | any>;
+  show: (data: OrdersRepositoryShowData) => Promise<Order | any>;
+  create: (data: OrdersRepositoryCreateData) => Promise<Order | any>;
+  update: (data: OrdersRepositoryChangeStatusData) => Promise<Order | any>;
+  delete: (data: OrdersRepositoryDeleteData) => Promise<'' | any>;
 }
