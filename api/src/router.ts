@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
 import path from 'node:path';
 
-import { json, Router } from 'express';
+import { Router } from 'express';
 import multer from 'multer';
 
 // import { createCategory } from './app/useCases/categories/createCategory';
@@ -333,7 +333,7 @@ router.put('/products/:_id', upload.single('image'), async (req, res) => {
 
   const updatedProduct = await updateProductUseCase.update({ _id, product });
 
-  if (name !== productExists.name && nameProductExists) {
+  if (name !== productExists && nameProductExists) {
     return res.status(400).json({ error: 'This product is already exists' });
   }
 
@@ -383,46 +383,43 @@ router.patch('/uploads/:_id', async (req, res) => {
     mongoCategoriesRepository
   );
 
+  console.log(`_idCategory: ${_idCategory}`);
   // procurar em todas as categories
   const categoryExists = await findIdCategoryUseCase.findById({ _idCategory });
 
-  console.log(`categoryExists: ${categoryExists}`);
-  if (!categoryExists) {
-    return res
-      .status(400)
-      .json({ error: `This category ${_idCategory} not exists` });
+  if (categoryExists === null) {
+    return res.status(400).json({
+      error: `This category ${_idCategory} not exists`,
+    });
   }
+
+  /*   if (!nameProductExists) {
+    const nameAtt = {
+      _id,
+      name,
+      description,
+      imagePath,
+      price,
+      ingredients,
+      category,
+    };
+    return res.status(200).send(nameAtt);
+  } */
 
   const updateProductCategoryUseCase = new UpdateProductCategoryUseCase(
     mongoProductsRepository
   );
 
-  const updatedCategoryFromProduct =
-    updateProductCategoryUseCase.updateCategory({ _id, _idCategory });
+  // stop herer
 
-  if (_idCategory !== categoryExists)
-    res.status(200).send(updatedCategoryFromProduct);
-});
+  const updatedCategoryProduct = updateProductCategoryUseCase.updateCategory({
+    _id,
+    _idCategory,
+  });
 
-// Delete product
-router.delete('/products/:_id', async (req, res) => {
-  const { _id } = req.params;
-  const mongoProductsRepository = new MongoProductsRepository();
+  console.log(`updatedCategoryFromProduct: ${updatedCategoryProduct}`);
 
-  const listProductUseCase = new ListProductUseCase(mongoProductsRepository);
-
-  const existProduct = await listProductUseCase.show({ _id });
-
-  if (!existProduct) {
-    return res.status(400).json({ error: 'This Product not exists' });
-  }
-
-  const deleteProductUseCase = new DeleteProductUseCase(
-    mongoProductsRepository
-  );
-
-  await deleteProductUseCase.delete({ _id });
-  return res.status(204).json({ DELETED: 'Ok ' });
+  return res.status(204).send(productsExists);
 });
 
 // Get products by category

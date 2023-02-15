@@ -7,12 +7,10 @@ export interface FindCategoryUseCaseId {
 export class FindIdCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 
-  async findById({ _idCategory }: FindCategoryUseCaseId) {
+  async findById(data: FindCategoryUseCaseId) {
     try {
-      console.log(`_idCategory:${_idCategory}`);
-      const category = await this.categoriesRepository.findById({
-        _idCategory,
-      });
+      console.log(`INSIDE USECASE: ${data._idCategory}`);
+      const category = await this.categoriesRepository.findById(data);
       console.log(`category: ${category}`);
       return category;
     } catch (error) {

@@ -57,16 +57,14 @@ export class MongoProductsRepository implements ProductsRepository {
   }
 
   async updateCategory({
+    // stop here
     _id,
     _idCategory,
   }: ProductsRepositoryChangeCategoryData) {
-    const changeIdCategory = await Product.findByIdAndUpdate(
-      { _id },
-      {
-        _idCategory: _idCategory,
-      }
-    );
-
-    return changeIdCategory;
+    const category = await Product.findByIdAndUpdate(_id, {
+      category: _idCategory,
+    });
+    console.log(`categoria apenas: ${category?.category}`);
+    return category?.category;
   }
 }

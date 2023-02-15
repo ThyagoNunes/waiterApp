@@ -9,8 +9,7 @@ export class ListProductUseCase {
 
   async show({ _id }: ListProductsUseCaseId) {
     try {
-      const product = await this.productsRepository.show({ _id });
-      return product!;
+      return await this.productsRepository.show({ _id });
     } catch (error) {
       console.log(error);
     }

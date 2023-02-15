@@ -37,7 +37,8 @@ export interface ProductsRepository {
   update: (data: ProductsRepositoryUpdateData) => Promise<Product | any>;
   delete: (data: ProductsRepositoryDeleteData) => Promise<Product | any>;
   findByName: (data: ProductsRepositoryFindName) => Promise<Product | any>;
-  updateCategory: (
-    data: ProductsRepositoryChangeCategoryData
-  ) => Promise<Product | any>;
+  updateCategory: ({
+    _id,
+    _idCategory,
+  }: ProductsRepositoryChangeCategoryData) => Promise<Product | any>;
 }

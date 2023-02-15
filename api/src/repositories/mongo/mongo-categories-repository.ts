@@ -71,15 +71,16 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     return nameFind?.name;
   }
 
+  // se mexer nisso teu pinto diminui 2cm
   async findById(data: CategoriesRepositoryFindById) {
-    console.log(`data: ${data}`);
-    const nameFind = await Category.findOne({ data }).where('_id').equals(data);
-
-    console.log(nameFind);
-    return nameFind?._idCategory;
+    const category = await Category.findOne({ data })
+      .where('_id')
+      .equals(data._idCategory);
+    return category!._id;
   }
 
   async updateCategory(data: CategoriesRepositoryUpdateCategoryId) {
+    // stop here
     const { _id, _idCategory } = data;
 
     const categoryUpdated = await Category.findByIdAndUpdate(_id, {
