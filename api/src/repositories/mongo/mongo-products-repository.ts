@@ -7,6 +7,7 @@ import {
   ProductsRepositoryUpdateData,
   ProductsRepositoryDeleteData,
   ProductsRepositoryChangeCategoryData,
+  ProductsRepositoryChangeImageData,
 } from '../products-repository';
 
 export class MongoProductsRepository implements ProductsRepository {
@@ -24,6 +25,8 @@ export class MongoProductsRepository implements ProductsRepository {
 
   async create({ product }: ProductsRepositoryCreateData) {
     const newProduct = await Product.create(product);
+    console.log(`mongo newProduct: ${newProduct}`);
+
     return newProduct;
   }
 
@@ -56,15 +59,17 @@ export class MongoProductsRepository implements ProductsRepository {
     return product?.name;
   }
 
-  async updateCategory({
-    // stop here
-    _id,
-    _idCategory,
-  }: ProductsRepositoryChangeCategoryData) {
-    const category = await Product.findByIdAndUpdate(_id, {
-      category: _idCategory,
+  async updateCategory(data: ProductsRepositoryChangeCategoryData) {
+    const category = await Product.findByIdAndUpdate(data._id, {
+      category: data._idCategory,
     });
-    console.log(`categoria apenas: ${category?.category}`);
-    return category?.category;
+    return category;
+  }
+
+  async updateImage(data: ProductsRepositoryChangeImageData) {
+    const imagePath = data.imagePath;
+    return await Product.findByIdAndUpdate(data._id, {
+      imagePath: imagePath,
+    });
   }
 }

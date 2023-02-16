@@ -20,6 +20,11 @@ export interface ProductsRepositoryChangeCategoryData {
   _idCategory: string;
 }
 
+export interface ProductsRepositoryChangeImageData {
+  _id: string;
+  imagePath: string;
+}
+
 export interface ProductsRepositoryDeleteData {
   _id: string;
 }
@@ -37,8 +42,10 @@ export interface ProductsRepository {
   update: (data: ProductsRepositoryUpdateData) => Promise<Product | any>;
   delete: (data: ProductsRepositoryDeleteData) => Promise<Product | any>;
   findByName: (data: ProductsRepositoryFindName) => Promise<Product | any>;
-  updateCategory: ({
-    _id,
-    _idCategory,
-  }: ProductsRepositoryChangeCategoryData) => Promise<Product | any>;
+  updateCategory: (
+    data: ProductsRepositoryChangeCategoryData
+  ) => Promise<Product | any>;
+  updateImage: (
+    data: ProductsRepositoryChangeImageData
+  ) => Promise<Product | any>;
 }

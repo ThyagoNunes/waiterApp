@@ -76,11 +76,11 @@ export class MongoCategoriesRepository implements CategoriesRepository {
     const category = await Category.findOne({ data })
       .where('_id')
       .equals(data._idCategory);
-    return category!._id;
+
+    return category?._id;
   }
 
   async updateCategory(data: CategoriesRepositoryUpdateCategoryId) {
-    // stop here
     const { _id, _idCategory } = data;
 
     const categoryUpdated = await Category.findByIdAndUpdate(_id, {

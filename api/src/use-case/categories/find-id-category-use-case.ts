@@ -9,9 +9,7 @@ export class FindIdCategoryUseCase {
 
   async findById(data: FindCategoryUseCaseId) {
     try {
-      console.log(`INSIDE USECASE: ${data._idCategory}`);
       const category = await this.categoriesRepository.findById(data);
-      console.log(`category: ${category}`);
       return category;
     } catch (error) {
       console.log(error);

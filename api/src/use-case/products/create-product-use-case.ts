@@ -12,6 +12,7 @@ export class CreateProductUseCase {
     try {
       const newProduct = await this.productsRepository.create(data);
 
+      console.log(`use-case newProduct: ${newProduct}`);
       return newProduct;
     } catch (error) {
       console.log(error);
