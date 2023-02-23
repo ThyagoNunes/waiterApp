@@ -543,33 +543,36 @@ router.get('/orders/:_id', async (req, res) => {
 //stay here
 // Create order
 router.post('/orders', async (req, res) => {
-  const status = ['WAITING', 'IN_PRODUCTION', 'DONE'];
+  const status = 'WAITING';
   const { table, products } = req.body;
 
   const order = {
-    table: table,
-    status: status,
-    products: products ? JSON.parse(products) : [],
+    table: JSON.stringify(table),
+    status,
+    products: [
+      {
+        product: JSON.stringify(products.product),
+        quantity: Number(products.quantity),
+      },
+    ],
   };
-
-  console.log(`products: ${products} `);
   /*
-  const mongoOrdersRepository = new MongoOrdersRepository();
-  const mongoProductsRepository = new MongoProductsRepository();
+  console.log(typeof objProduct);
+  console.log(`objProduct: ${objProduct} `);
+  */
 
+  const _id = order.products.map((product) => {
+    return product.product;
+  });
 
-  const { name, description, price, ingredients, category } = req.body;
+  console.log(typeof _id);
+  console.log(`_id: ${_id}`);
+  const mongoOrderRepository = new MongoOrdersRepository();
+  const createOrderUseCase = new CreateOrderUseCase(mongoOrderRepository);
 
-  const product = {
-    name,
-    description,
-    imagePath,
-    price,
-    ingredients: ingredients ? JSON.parse(ingredients) : [],
-    category: category,
-  }; */
+  const newOrder = await createOrderUseCase.create({ order });
 
-  console.log(`aaaa ${products.product}`);
+  console.log(`aaaa ${newOrder}`);
 
   res.status(200).send(order);
 });

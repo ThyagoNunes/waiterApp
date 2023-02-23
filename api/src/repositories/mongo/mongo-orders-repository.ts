@@ -31,7 +31,11 @@ export class MongoOrdersRepository implements OrdersRepository {
   async create({ order }: OrdersRepositoryCreateData) {
     const newOrder = await Order.create({ order });
 
+    console.log(`newOrder inside mongo: ${newOrder}`);
+
     const orderDetails = await newOrder.populate('products.product');
+
+    console.log(`orderDetails: ${orderDetails}`);
 
     io.emit('orders@new', orderDetails);
     return orderDetails;
