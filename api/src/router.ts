@@ -545,27 +545,14 @@ router.get('/orders/:_id', async (req, res) => {
 router.post('/orders', async (req, res) => {
   const status = 'WAITING';
   const { table, products } = req.body;
-
   const order = {
     table: JSON.stringify(table),
-    status,
-    products: [
-      {
-        product: JSON.stringify(products.product),
-        quantity: Number(products.quantity),
-      },
-    ],
+    status: status,
+    products: products ? products : [],
   };
-  /*
-  console.log(typeof objProduct);
-  console.log(`objProduct: ${objProduct} `);
-  */
 
-  const _id = order.products.map((product) => {
-    return product.product;
-  });
+  const _id = order.products[1].product;
 
-  console.log(typeof _id);
   console.log(`_id: ${_id}`);
   const mongoOrderRepository = new MongoOrdersRepository();
   const createOrderUseCase = new CreateOrderUseCase(mongoOrderRepository);
